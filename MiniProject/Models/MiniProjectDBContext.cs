@@ -38,8 +38,6 @@ namespace MiniProject.Models
             {
                 entity.ToTable("ClosingPriceTable");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CreateUser)
@@ -63,13 +61,13 @@ namespace MiniProject.Models
                     .WithMany(p => p.ClosingPriceTables)
                     .HasForeignKey(d => d.StockId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ClosingPr__Stock__3E52440B");
+                    .HasConstraintName("FK__ClosingPr__Stock__4E88ABD4");
             });
 
             modelBuilder.Entity<StockTable>(entity =>
             {
                 entity.HasKey(e => e.StockId)
-                    .HasName("PK__StockTab__2C83A9C29ED31BC0");
+                    .HasName("PK__StockTab__2C83A9C2139B1AFE");
 
                 entity.ToTable("StockTable");
 
@@ -95,8 +93,6 @@ namespace MiniProject.Models
             modelBuilder.Entity<TradeTable>(entity =>
             {
                 entity.ToTable("TradeTable");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
@@ -126,7 +122,7 @@ namespace MiniProject.Models
                     .WithMany(p => p.TradeTables)
                     .HasForeignKey(d => d.StockId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TradeTabl__Stock__38996AB5");
+                    .HasConstraintName("FK__TradeTabl__Stock__5165187F");
             });
 
             OnModelCreatingPartial(modelBuilder);

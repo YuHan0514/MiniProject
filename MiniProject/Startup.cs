@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MiniProject.Interface;
 using MiniProject.Models;
+using MiniProject.Repository;
 using MiniProject.Service;
-using MiniProject.Service.Interface;
+
 
 namespace MiniProject
 {
@@ -26,6 +28,7 @@ namespace MiniProject
             services.AddDbContext<MiniProjectDBContext>();
             services.AddControllersWithViews();
             services.AddScoped<ITradeService, TradeService>();
+            services.AddScoped<IStockRepository, StockRepository>();
             services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen();
             // In production, the Angular files will be served from this directory

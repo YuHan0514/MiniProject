@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MiniProject.Models;
 using MiniProject.Service;
 using MiniProject.ViewModels;
 using System;
@@ -13,6 +14,11 @@ namespace MiniProject.Profiles
         public TradeProfile()
         {
             CreateMap<TradeRespServiceModel, TradeRespViewModel>();
+            CreateMap<JoinTable, TradeRespViewModel>();
+            CreateMap<JoinTable, TradeRespServiceModel>();
+            CreateMap<TradeRespViewModel, TradeRespViewModel>();
+
+            
 
         }
 

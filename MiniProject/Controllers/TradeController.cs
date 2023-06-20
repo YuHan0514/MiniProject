@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MiniProject.Interface;
 using MiniProject.Service;
-using MiniProject.Service.Interface;
 using MiniProject.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,10 +15,6 @@ namespace MiniProject.Controllers
     [Route("[controller]/[action]")]
     public class TradeController : ControllerBase
     {
-        //private static readonly string[] Summaries = new[]
-        //{
-        //    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        //};
 
         private readonly ILogger<TradeController> _logger;
         private ITradeService _service;
@@ -31,11 +27,21 @@ namespace MiniProject.Controllers
         }
 
         [HttpGet]
-        public async Task<TradeRespServiceModel> Get()
+        public async Task<string> UpdateDB(string startDate, string endDate)
         {
-            var map =  _service.Get();
-            return await map;
-        }   
-        
+            await _service.UpdateDB(startDate, endDate);
+            return "OK";
+        }
+
+
+        [HttpGet]
+        public async Task<List<TradeRespViewModel>> GetList()
+        {
+            var data = await _service.GetList();
+            var dataList = data.ToList();
+            var map = _mapper.Map<List<TradeRespViewModel>>(dataList);
+            return map;
+
+        }
     }
 }

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MiniProject.ServiceModels
+namespace MiniProject.Models
 {
-    public class TradeServiceModel
+    public class JoinTable
     {
-
-
         public DateTime TradeDate { get; set; }
         public string StockId { get; set; }
         public string Name { get; set; }
