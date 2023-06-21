@@ -10,7 +10,7 @@ namespace MiniProject.Interface
 
         public Task<List<TradeRespServiceModel>> GetList();
 
-        //public Task Delete(int id);
+        public Task Delete(int id);
 
     }
 }

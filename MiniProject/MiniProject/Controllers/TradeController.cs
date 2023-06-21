@@ -40,11 +40,11 @@ namespace MiniProject.Controllers
 
         }
 
-        //[HttpPost]
-        //public async Task<string> Delete(int id)
-        //{
-        //    await _service.Delete(id);
-        //    return "OK";
-        //}
+        [HttpPost]
+        public async Task<string> Delete(int id)
+        {
+            await _service.Delete(id);
+            return "OK";
+        }
     }
 }
