@@ -127,23 +127,23 @@ namespace MiniProject.Service
             return map;
         }
 
-        //public async Task Delete(int id)
-        //{
-        //    using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-        //    {
-        //        try
-        //        {
-        //            var data = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == id);
-        //            data.Status = 2;
-        //            _context.SaveChanges();
-        //            scope.Complete();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine(ex.Message);
-        //            throw;
-        //        }
-        //    }
-        //}
+        public async Task Delete(int id)
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                try
+                {
+                    var data = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == id);
+                    data.Status = 2;
+                    _context.SaveChanges();
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+        }
     }
 }
