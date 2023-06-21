@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MiniProject.Interface;
-using MiniProject.Service;
 using MiniProject.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MiniProject.Controllers
@@ -38,8 +35,7 @@ namespace MiniProject.Controllers
         public async Task<List<TradeRespViewModel>> GetList()
         {
             var data = await _service.GetList();
-            var dataList = data.ToList();
-            var map = _mapper.Map<List<TradeRespViewModel>>(dataList);
+            var map = _mapper.Map<List<TradeRespViewModel>>(data);
             return map;
 
         }

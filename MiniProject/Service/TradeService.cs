@@ -1,23 +1,14 @@
-﻿using System;
+﻿using AutoMapper;
+using MiniProject.Interface;
+using MiniProject.Models;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using Newtonsoft.Json;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using static MiniProject.ServiceModels.TradeServiceModel;
-using MiniProject.ServiceModels;
-
-using System.Globalization;
-using AutoMapper;
 using System.Text.RegularExpressions;
-using MiniProject.Interface;
-using MiniProject.Models;
+using System.Threading.Tasks;
 
 namespace MiniProject.Service
 {
@@ -48,26 +39,8 @@ namespace MiniProject.Service
             {
                 foreach (JsonElement x in value.EnumerateArray())
                 {
-                    //var tradeLast = _context.TradeTables.OrderByDescending(d => d.Id).FirstOrDefault();
-                    //var closeLast = _context.ClosingPriceTables.OrderByDescending(d => d.Id).FirstOrDefault();
                     var stockString = x[1].ToString().Trim();
-                    //int tradeId;
-                    //int closeId;
                     var name = Regex.Replace(stockString, @"\s+", " ").Split(' ');
-                    //第一次執行要跑以下
-                    //if (tradeLast != null)
-                    //    tradeId = tradeLast.Id;
-                    //else
-                    //    tradeId = 0;
-                    //if (closeLast != null)
-                    //    closeId = closeLast.Id;
-                    //else
-                    //    closeId = 0;
-                    ///////////
-                    //資料庫內有值時跑以下
-                    //tradeLast = _context.TradeTables.OrderByDescending(d => d.Id).FirstOrDefault();
-                    //closeLast = _context.ClosingPriceTables.OrderByDescending(d => d.Id).FirstOrDefault();
-                    //
                     var volumeString = x[3].ToString();
                     if (volumeString.Contains(','))
                     {
@@ -85,23 +58,20 @@ namespace MiniProject.Service
                             CreateUser = "Admin",
                             CreateDate = DateTime.Today.Date
                         };
-                        _context.StockTables.Add(stockTable);
-                        //_context.SaveChanges();
+                        await _context.StockTables.AddAsync(stockTable);
                     }
                     var priceList = _context.ClosingPriceTables.Where(x => x.StockId == name[0]).ToList();
                     if (priceList.Count == 0 || priceList.Where(x => x.TradeDate == day.Date).ToList().Count == 0)
                     {
                         ClosingPriceTable closingPriceTable = new ClosingPriceTable()
                         {
-                            //Id = closeId + 1,
                             StockId = name[0],
                             TradeDate = day.Date,
                             Price = float.Parse(x[5].ToString()),
                             CreateUser = "Admin",
                             CreateDate = DateTime.Today.Date
                         };
-                        _context.ClosingPriceTables.Add(closingPriceTable);
-                        //_context.SaveChanges();
+                        await _context.ClosingPriceTables.AddAsync(closingPriceTable);
 
                     }
                     string type = "";
@@ -119,7 +89,6 @@ namespace MiniProject.Service
                     }
                     TradeTable tradeData = new TradeTable
                     {
-                        //Id = tradeId + 1,
                         StockId = name[0],
                         TradeDate = day.Date,
                         Type = type,
@@ -130,7 +99,7 @@ namespace MiniProject.Service
                         CreateUser = "Admin",
                         CreateDate = DateTime.Today.Date
                     };
-                    _context.TradeTables.Add(tradeData);
+                    await _context.TradeTables.AddAsync(tradeData);
                     _context.SaveChanges();
                     //break;
                 }
@@ -143,7 +112,6 @@ namespace MiniProject.Service
             var dataList = data.ToList();
             var map = _mapper.Map<List<TradeRespServiceModel>>(dataList);
             return map;
-
         }
     }
 }

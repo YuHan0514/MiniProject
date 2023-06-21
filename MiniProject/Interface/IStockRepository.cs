@@ -1,8 +1,5 @@
-﻿
-using MiniProject.Models;
-using System;
+﻿using MiniProject.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MiniProject.Interface

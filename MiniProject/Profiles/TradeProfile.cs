@@ -2,10 +2,6 @@
 using MiniProject.Models;
 using MiniProject.Service;
 using MiniProject.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MiniProject.Profiles
 {
