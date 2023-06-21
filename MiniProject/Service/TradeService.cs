@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace MiniProject.Service
 {
@@ -72,7 +73,6 @@ namespace MiniProject.Service
                             CreateDate = DateTime.Today.Date
                         };
                         await _context.ClosingPriceTables.AddAsync(closingPriceTable);
-
                     }
                     string type = "";
                     switch (x[2].ToString())
@@ -100,12 +100,23 @@ namespace MiniProject.Service
                         CreateDate = DateTime.Today.Date
                     };
                     await _context.TradeTables.AddAsync(tradeData);
-                    _context.SaveChanges();
                     //break;
+                }
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        throw;
+                    }
                 }
             }
         }
-        // i am branch file
         public async Task<List<TradeRespServiceModel>> GetList()
         {
             var data = await _stockRepository.GetList();
