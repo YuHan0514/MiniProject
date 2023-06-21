@@ -4,6 +4,7 @@ using MiniProject.Interface;
 using MiniProject.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace MiniProject.Repository
 {
@@ -12,7 +13,9 @@ namespace MiniProject.Repository
         private readonly string _connectString = @"Server=(LocalDB)\MSSQLLocalDB;Database=MiniProjectDB;Trusted_Connection=True;";
         public async Task<IEnumerable<JoinTable>> GetList()
         {
-            string sqlQuery = @"
+            using (var scope = new TransactionScope())
+            {
+                string sqlQuery = @"
                 SELECT 
                     TradeTable.TradeDate,
                     StockTable.StockId,
@@ -28,10 +31,12 @@ namespace MiniProject.Repository
                     LEFT JOIN ClosingPriceTable ON TradeTable.StockId = ClosingPriceTable.StockId
                                                 AND TradeTable.TradeDate = ClosingPriceTable.TradeDate";
 
-            using (var conn = new SqlConnection(_connectString))
-            {
-                var result = await conn.QueryAsync<JoinTable>(sqlQuery);
-                return result;
+                using (var conn = new SqlConnection(_connectString))
+                {
+                    var result = await conn.QueryAsync<JoinTable>(sqlQuery);
+                    scope.Complete();
+                    return result;
+                }
             }
         }
     }
