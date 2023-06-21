@@ -2,9 +2,7 @@
 using Microsoft.Data.SqlClient;
 using MiniProject.Interface;
 using MiniProject.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MiniProject.Repository
@@ -26,8 +24,9 @@ namespace MiniProject.Repository
                     TradeTable.LendingPeriod
                 FROM 
                     TradeTable
-                    INNER JOIN StockTable ON TradeTable.StockId = StockTable.StockId
-                    INNER JOIN ClosingPriceTable ON TradeTable.StockId = ClosingPriceTable.StockId";
+                    LEFT JOIN StockTable ON TradeTable.StockId = StockTable.StockId
+                    LEFT JOIN ClosingPriceTable ON TradeTable.StockId = ClosingPriceTable.StockId
+                                                AND TradeTable.TradeDate = ClosingPriceTable.TradeDate";
 
             using (var conn = new SqlConnection(_connectString))
             {
