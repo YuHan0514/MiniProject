@@ -105,7 +105,7 @@ namespace MiniProject.Service
                 }
             }
         }
-
+        // i am branch file
         public async Task<List<TradeRespServiceModel>> GetList()
         {
             var data = await _stockRepository.GetList();
