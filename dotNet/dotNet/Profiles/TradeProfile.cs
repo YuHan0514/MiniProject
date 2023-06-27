@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using dotNet.Models;
-using dotNet.Service;
+using dotNet.ServiceModels;
 using dotNet.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace dotNet.Profiles
 {
@@ -16,7 +16,7 @@ namespace dotNet.Profiles
             CreateMap<TradeRespServiceModel, TradeRespViewModel>();
             CreateMap<JoinTable, TradeRespViewModel>();
             CreateMap<JoinTable, TradeRespServiceModel>();
-            CreateMap<TradeRespViewModel, TradeRespViewModel>();
+            CreateMap<TradeViewModel, TradeServiceModel>();
             CreateMap<JoinTable, StockTable>();
             CreateMap<List<object>, JoinTable>()
                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => TransDateTime(src[0].ToString())))
@@ -45,16 +45,24 @@ namespace dotNet.Profiles
                     .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
 
+            CreateMap<TradeServiceModel, TradeTable>()
+                    .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate))
+                    .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
+                    .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+                    .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
+                    .ForMember(dest => dest.Fee, opt => opt.MapFrom(src => src.Fee))
+                    .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src.LendingPeriod));
+
         }
         private static string GetStockId(string stockString)
         {
-            var splitList = stockString.Trim().Split(' ');
-            return splitList[0];
+            var splitList = stockString.Trim().Split(' ').ToList();
+            return splitList.First();
         }
         private static string GetStockName(string stockString)
         {
-            var splitList = stockString.Trim().Split(' ');
-            return splitList[^1];
+            var splitList = stockString.Trim().Split(' ').ToList();
+            return splitList.Last();
         }
         private static DateTime TransDateTime(string twDate)
         {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dotNet.Interface;
+using dotNet.ServiceModels;
 using dotNet.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -26,8 +27,7 @@ namespace dotNet.Controllers
         [HttpGet]
         public async Task<string> InsertDataToDB(string startDate, string endDate)
         {
-            await _service.InsertDataToDB(startDate, endDate);
-            return "OK";
+            return await _service.InsertDataToDB(startDate, endDate);
         }
 
 
@@ -43,8 +43,22 @@ namespace dotNet.Controllers
         [HttpPost]
         public async Task<string> DeleteData(int id)
         {
-            await _service.DeleteData(id);
-            return "OK";
+            return await _service.DeleteData(id);
+        }
+
+        [HttpPost]
+        public async Task<TradeRespViewModel> GetById(int id)
+        {
+            var data =  await _service.GetById(id);
+            var map = _mapper.Map<TradeRespViewModel>(data);
+            return map;
+        }
+
+        [HttpPost]
+        public async Task<string> UpdateById(TradeViewModel stock)
+        {
+            var map = _mapper.Map<TradeServiceModel>(stock);
+            return await _service.UpdateById(map);
         }
     }
 }
