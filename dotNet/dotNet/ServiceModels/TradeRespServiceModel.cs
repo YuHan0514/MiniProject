@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNet.Service
+namespace dotNet.ServiceModels
 {
     public class TradeRespServiceModel
     {

@@ -2,6 +2,7 @@
 using dotNet.Interface;
 using dotNet.Models;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
@@ -24,21 +25,14 @@ namespace dotNet.Helper
         }
         public async Task<List<JoinTable>> GetDataFromURL(string startDate, string endDate)
         {
-            try
-            {
-                HttpClient httpClient = _clientFactory.CreateClient();
-                string apiUrl = $"{_twseUrl}?StartDate={startDate}&EndDate={endDate}&Response=json";
-                var message = await httpClient.GetStringAsync(apiUrl);
-                var jsonObject = JsonSerializer.Deserialize<TwseTable>(message);
-                var jsonArray = JsonSerializer.Deserialize<List<List<object>>>(jsonObject.data.ToString());
-                List<JoinTable> DataList = _mapper.Map<List<JoinTable>>(jsonArray);
-                return DataList;
-            }
-            catch (System.Exception ex)
-            {
-                var msg = ex;
-                throw;
-            }
+            HttpClient httpClient = _clientFactory.CreateClient();
+            string apiUrl = $"{_twseUrl}?StartDate={startDate}&EndDate={endDate}&Response=json";
+            var message = await httpClient.GetStringAsync(apiUrl);
+            var jsonObject = JsonSerializer.Deserialize<TwseTable>(message);
+            var jsonArray = JsonSerializer.Deserialize<List<List<object>>>(jsonObject.data.ToString());
+            List<JoinTable> DataList = _mapper.Map<List<JoinTable>>(jsonArray);
+            return DataList;
+            
             
         }
     }

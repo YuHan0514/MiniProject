@@ -8,6 +8,7 @@ using System.Transactions;
 using System.Configuration;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace dotNet.Repository
 {
@@ -21,13 +22,13 @@ namespace dotNet.Repository
         }
         public IConfiguration Configuration { get; }
         
-        public async Task<IEnumerable<JoinTable>> GetList()
+
+        //join只取status不為2的資料
+        public async Task<IEnumerable<JoinTable>> JoinAllTable()
         {
             using (var conn = new SqlConnection(_connectString))
             {
-                using (var scope = new TransactionScope())
-                {
-                    string sqlQuery = @"
+                string sqlQuery = @"
                 SELECT 
                     TradeTable.Id,
                     TradeTable.TradeDate,
@@ -48,12 +49,40 @@ namespace dotNet.Repository
                     TradeTable.Status <> 2";
 
 
-                    var result = conn.Query<JoinTable>(sqlQuery);
-                    scope.Complete();
-                    return result;
-                }
+                var result =await conn.QueryAsync<JoinTable>(sqlQuery);
+                return result;
             }
             
+        }
+        public async Task<JoinTable> JoinTableById(int id)
+        {
+            using (var conn = new SqlConnection(_connectString))
+            {
+                string sqlQuery = $@"
+                SELECT 
+                    TradeTable.Id,
+                    TradeTable.TradeDate,
+                    StockTable.StockId,
+                    StockTable.Name,
+                    TradeTable.Type,
+                    TradeTable.Volume,
+                    TradeTable.Fee,
+                    ClosingPriceTable.Price,
+                    TradeTable.LendingPeriod,
+                    TradeTable.Status
+                FROM 
+                    TradeTable
+                    LEFT JOIN StockTable ON TradeTable.StockId = StockTable.StockId
+                    LEFT JOIN ClosingPriceTable ON TradeTable.StockId = ClosingPriceTable.StockId
+                                                AND TradeTable.TradeDate = ClosingPriceTable.TradeDate
+                WHERE
+                    TradeTable.Id = {id}";
+
+
+                var result = await conn.QueryAsync<JoinTable>(sqlQuery);
+                return result.FirstOrDefault();
+            }
+
         }
     }
 }
