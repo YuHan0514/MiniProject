@@ -105,23 +105,19 @@ namespace dotNet.Service
         public async Task<string> DeleteData(int id)
         {
             string returnString;
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            try
             {
-                try
-                {
-                    var data = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == id);
-                    data.Status = 2;
-                    data.UpdateDate = DateTime.Today;
-                    data.UpdateUser = "User";
-                    _context.SaveChanges();
-                    scope.Complete();
-                    returnString = "200 資料刪除完成";
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                var data = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == id);
+                data.Status = 2;
+                data.UpdateDate = DateTime.Today;
+                data.UpdateUser = "User";
+                _context.SaveChanges();
+                returnString = "200 資料刪除完成";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
             return returnString;
         }
@@ -134,6 +130,7 @@ namespace dotNet.Service
             return map;
         }
 
+        //修改DB中一筆資料，只修改TradeTables
         public async Task<string> UpdateById(TradeServiceModel stock)
         {
             string returnString;

@@ -27,13 +27,10 @@ namespace dotNet.Helper
         {
             HttpClient httpClient = _clientFactory.CreateClient();
             string apiUrl = $"{_twseUrl}?StartDate={startDate}&EndDate={endDate}&Response=json";
-            var message = await httpClient.GetStringAsync(apiUrl);
-            var jsonObject = JsonSerializer.Deserialize<TwseTable>(message);
-            var jsonArray = JsonSerializer.Deserialize<List<List<object>>>(jsonObject.data.ToString());
-            List<JoinTable> DataList = _mapper.Map<List<JoinTable>>(jsonArray);
+            var twseData = await httpClient.GetStringAsync(apiUrl);
+            var stockData = JsonSerializer.Deserialize<TwseTable>(twseData);
+            List<JoinTable> DataList = _mapper.Map<List<JoinTable>>(stockData.data);
             return DataList;
-            
-            
         }
     }
 }
