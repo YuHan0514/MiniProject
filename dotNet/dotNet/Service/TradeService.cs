@@ -37,47 +37,49 @@ namespace dotNet.Service
             startDate = _context.ClosingPriceTables.OrderByDescending(a => a.TradeDate).FirstOrDefault().TradeDate.AddDays(1).ToString("yyyyMMdd");
             try
             {
-                var dataList = await _tradeHelper.GetDataFromURL(startDate, endDate);
-                var stockids = dataList.Select(x => x.StockId);
-                var stockList = _context.StockTables.Where(x => stockids.Contains(x.StockId)).ToList();
-                var closingDate = dataList.Select(x => x.TradeDate);
-                var closingList = _context.ClosingPriceTables.Where(x => closingDate.Contains(x.TradeDate) && stockids.Contains(x.StockId)).ToList();
+                var joinTables = await _tradeHelper.GetDataFromURL(startDate, endDate);
+                var vs = joinTables.Select(x => x.StockId);
+                var stockTables = _context.StockTables.Where(x => vs.Contains(x.StockId)).ToList();
+                var dateTimes = joinTables.Select(x => x.TradeDate);
+                var closingPriceTables = _context.ClosingPriceTables.Where(x => dateTimes.Contains(x.TradeDate) && vs.Contains(x.StockId)).ToList();
+                var today = DateTime.Today;
+                string createUser = "Admin";
 
-                foreach (JoinTable joinTable in dataList)
+                foreach (JoinTable joinTable in joinTables)
                 {
-                    if (stockList.Where(x => x.StockId == joinTable.StockId).FirstOrDefault() == null)
+                    if (stockTables.Where(x => x.StockId == joinTable.StockId).FirstOrDefault() == null)
                     {
-                        var map = _mapper.Map<StockTable>(joinTable);
-                        map.CreateDate = DateTime.Today;
-                        map.CreateUser = "Admin";
+                        var stockTable = _mapper.Map<StockTable>(joinTable);
+                        stockTable.CreateDate = today;
+                        stockTable.CreateUser = createUser;
                         using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                         {
-                            await _context.StockTables.AddAsync(map);
+                            await _context.StockTables.AddAsync(stockTable);
                             scope.Complete();
                         }
-                        stockList.Add(map);
+                        stockTables.Add(stockTable);
                     }
 
 
-                    if (closingList.Where(x => x.TradeDate == joinTable.TradeDate && x.StockId == joinTable.StockId).ToList().Count == 0)
+                    if (closingPriceTables.Where(x => x.TradeDate == joinTable.TradeDate && x.StockId == joinTable.StockId).ToList().Count == 0)
                     {
-                        var map = _mapper.Map<ClosingPriceTable>(joinTable);
-                        map.CreateUser = "Admin";
-                        map.CreateDate = DateTime.Today;
+                        var closingPriceTable = _mapper.Map<ClosingPriceTable>(joinTable);
+                        closingPriceTable.CreateDate = today;
+                        closingPriceTable.CreateUser = createUser;
                         using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                         {
-                            await _context.ClosingPriceTables.AddAsync(map);
+                            await _context.ClosingPriceTables.AddAsync(closingPriceTable);
                             scope.Complete();
                         }
-                        closingList.Add(map);
+                        closingPriceTables.Add(closingPriceTable);
                     }
 
-                    var mapTrade = _mapper.Map<TradeTable>(joinTable);
-                    mapTrade.CreateUser = "Admin";
-                    mapTrade.CreateDate = DateTime.Today;
+                    var tradeTable = _mapper.Map<TradeTable>(joinTable);
+                    tradeTable.CreateDate = today;
+                    tradeTable.CreateUser = createUser;
                     using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        await _context.TradeTables.AddAsync(mapTrade);
+                        await _context.TradeTables.AddAsync(tradeTable);
                         scope.Complete();
                     }
                     _context.SaveChanges();
@@ -95,22 +97,21 @@ namespace dotNet.Service
         //取得DB所有資料
         public async Task<List<TradeRespServiceModel>> GetDataFromDB()
         {
-            var data = await _stockRepository.JoinAllTable();
-            var dataList = data.ToList();
-            var map = _mapper.Map<List<TradeRespServiceModel>>(dataList);
-            return map;
+            var joinTables = (await _stockRepository.JoinAllTable()).ToList();
+            var tradeRespServiceModels = _mapper.Map<List<TradeRespServiceModel>>(joinTables);
+            return tradeRespServiceModels;
         }
 
         //從DB抓取資料，並將status改為2
-        public async Task<string> DeleteData(int id)
+        public async Task<string> DeleteStockData(int id)
         {
             string returnString;
             try
             {
-                var data = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == id);
-                data.Status = 2;
-                data.UpdateDate = DateTime.Today;
-                data.UpdateUser = "User";
+                var tradeTable = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == id);
+                tradeTable.Status = 2;
+                tradeTable.UpdateDate = DateTime.Today;
+                tradeTable.UpdateUser = "User";
                 _context.SaveChanges();
                 returnString = "200 資料刪除完成";
             }
@@ -123,35 +124,31 @@ namespace dotNet.Service
         }
 
         //利用ID從DB抓取一筆資料
-        public async Task<TradeRespServiceModel> GetById(int id)
+        public async Task<TradeRespServiceModel> GetStockById(int id)
         {
-            var data = await _stockRepository.JoinTableById(id);
-            var map = _mapper.Map<TradeRespServiceModel>(data);
-            return map;
+            var joinTable = await _stockRepository.JoinAllTableById(id);
+            var tradeRespServiceModel = _mapper.Map<TradeRespServiceModel>(joinTable);
+            return tradeRespServiceModel;
         }
 
         //修改DB中一筆資料，只修改TradeTables
-        public async Task<string> UpdateById(TradeServiceModel stock)
+        public async Task<string> UpdateStockById(TradeServiceModel stock)
         {
             string returnString;
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            try
             {
-                try
-                {
-                    var data = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == stock.Id);
-                    _mapper.Map(stock, data);
-                    data.Status = 1;
-                    data.UpdateDate = DateTime.Today;
-                    data.UpdateUser = "User";
-                    _context.SaveChanges();
-                    scope.Complete();
-                    returnString = "200 資料更新完成";
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                var tradeTable = await _context.TradeTables.FirstOrDefaultAsync(d => d.Id == stock.Id);
+                _mapper.Map(stock, tradeTable);
+                tradeTable.Status = 1;
+                tradeTable.UpdateDate = DateTime.Today;
+                tradeTable.UpdateUser = "User";
+                _context.SaveChanges();
+                returnString = "200 資料更新完成";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
             return returnString;
         }

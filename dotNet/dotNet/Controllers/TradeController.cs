@@ -34,31 +34,31 @@ namespace dotNet.Controllers
         [HttpGet]
         public async Task<List<TradeRespViewModel>> GetDataFromDB()
         {
-            var data = await _service.GetDataFromDB();
-            var map = _mapper.Map<List<TradeRespViewModel>>(data);
-            return map;
+            var tradeRespServiceModels = await _service.GetDataFromDB();
+            var tradeRespViewModels = _mapper.Map<List<TradeRespViewModel>>(tradeRespServiceModels);
+            return tradeRespViewModels;
 
         }
 
         [HttpPost]
-        public async Task<string> DeleteData(int id)
+        public async Task<string> DeleteStockData(int id)
         {
-            return await _service.DeleteData(id);
+            return await _service.DeleteStockData(id);
         }
 
         [HttpPost]
-        public async Task<TradeRespViewModel> GetById(int id)
+        public async Task<TradeRespViewModel> GetStockById(int id)
         {
-            var data =  await _service.GetById(id);
-            var map = _mapper.Map<TradeRespViewModel>(data);
-            return map;
+            var tradeRespServiceModel =  await _service.GetStockById(id);
+            var trade = _mapper.Map<TradeRespViewModel>(tradeRespServiceModel);
+            return trade;
         }
 
         [HttpPost]
-        public async Task<string> UpdateById(TradeViewModel stock)
+        public async Task<string> UpdateStockById(TradeViewModel trade)
         {
-            var map = _mapper.Map<TradeServiceModel>(stock);
-            return await _service.UpdateById(map);
+            var tradeService = _mapper.Map<TradeServiceModel>(trade);
+            return await _service.UpdateStockById(tradeService);
         }
     }
 }

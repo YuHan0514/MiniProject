@@ -36,6 +36,7 @@ namespace dotNet
             services.AddDbContext<MiniProjectDBContext>();
             services.AddControllersWithViews();
             services.AddScoped<ITradeService, TradeService>();
+            services.AddScoped<IStockService, StockService>();
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<ITradeHelper, TradeHelper>();
             services.AddAutoMapper(typeof(Startup));

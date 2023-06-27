@@ -28,9 +28,9 @@ namespace dotNet.Helper
             HttpClient httpClient = _clientFactory.CreateClient();
             string apiUrl = $"{_twseUrl}?StartDate={startDate}&EndDate={endDate}&Response=json";
             var twseData = await httpClient.GetStringAsync(apiUrl);
-            var stockData = JsonSerializer.Deserialize<TwseTable>(twseData);
-            List<JoinTable> DataList = _mapper.Map<List<JoinTable>>(stockData.data);
-            return DataList;
+            var twse = JsonSerializer.Deserialize<TwseTable>(twseData);
+            List<JoinTable> joinTables = _mapper.Map<List<JoinTable>>(twse.data);
+            return joinTables;
         }
     }
 }

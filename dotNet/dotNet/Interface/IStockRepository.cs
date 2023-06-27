@@ -7,6 +7,6 @@ namespace dotNet.Interface
     public interface IStockRepository
     {
         public Task<IEnumerable<JoinTable>> JoinAllTable();
-        public Task<JoinTable> JoinTableById(int id);
+        public Task<JoinTable> JoinAllTableById(int id);
     }
 }
