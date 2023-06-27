@@ -11,10 +11,10 @@ namespace dotNet.Interface
 
         public Task<List<TradeRespServiceModel>> GetDataFromDB();
 
-        public Task<string> DeleteData(int id);
+        public Task<string> DeleteStockData(int id);
 
-        public Task<TradeRespServiceModel> GetById(int id);
+        public Task<TradeRespServiceModel> GetStockById(int id);
 
-        public Task<string> UpdateById(TradeServiceModel stock);
+        public Task<string> UpdateStockById(TradeServiceModel stock);
     }
 }

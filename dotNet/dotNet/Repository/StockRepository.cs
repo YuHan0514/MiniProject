@@ -53,7 +53,7 @@ namespace dotNet.Repository
         }
 
         //join某id的資料
-        public async Task<JoinTable> JoinTableById(int id)
+        public async Task<JoinTable> JoinAllTableById(int id)
         {
             using (var conn = new SqlConnection(_connectString))
             {

@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <td width="200px">tradeDate</td>
-        <td width="200px">stockId</td>
-        <td width="200px">name</td>
+        <td width="400px">stockCode</td>
+        <!--<td width="200px">name</td>-->
         <td width="200px">type</td>
         <td width="200px">volume</td>
         <td width="200px">fee</td>
@@ -17,8 +17,8 @@
     <tbody>
       <tr *ngFor="let stock of stockArray">
         <td>{{stock.tradeDate}}</td>
-        <td>{{stock.stockId}}</td>
-        <td>{{stock.name}}</td>
+        <td>{{stock.stockId}} {{stock.name}}</td>
+        <!--<td>{{stock.name}}</td>-->
         <td>{{stock.type}}</td>
         <td>{{stock.volume}}</td>
         <td>{{stock.fee}}</td>

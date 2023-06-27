@@ -15,9 +15,11 @@ namespace dotNet.Profiles
         {
             CreateMap<TradeRespServiceModel, TradeRespViewModel>()
                      .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate.ToString("yyyy-MM-dd")));
+            CreateMap<ClosingPriceTable, StockRespServiceModel>();
             CreateMap<JoinTable, TradeRespViewModel>();
             CreateMap<JoinTable, TradeRespServiceModel>();
             CreateMap<TradeViewModel, TradeServiceModel>();
+            CreateMap<StockRespServiceModel, StockRespViewModel>();
             CreateMap<JoinTable, StockTable>();
             CreateMap<List<object>, JoinTable>()
                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => TransDateTime(src[0].ToString())))
