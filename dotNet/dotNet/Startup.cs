@@ -24,7 +24,13 @@ namespace dotNet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5000").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
             services.AddControllers();
             services.AddHttpClient();
             services.AddDbContext<MiniProjectDBContext>();
@@ -54,6 +60,7 @@ namespace dotNet
             //{
             //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             //});
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();

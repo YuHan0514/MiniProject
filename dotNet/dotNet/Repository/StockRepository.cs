@@ -2,13 +2,10 @@
 using dotNet.Interface;
 using dotNet.Models;
 using Microsoft.Data.SqlClient;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Transactions;
-using System.Configuration;
-using Microsoft.IdentityModel.Protocols;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace dotNet.Repository
 {
@@ -54,6 +51,8 @@ namespace dotNet.Repository
             }
             
         }
+
+        //join某id的資料
         public async Task<JoinTable> JoinTableById(int id)
         {
             using (var conn = new SqlConnection(_connectString))

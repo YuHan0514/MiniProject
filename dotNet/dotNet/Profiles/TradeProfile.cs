@@ -13,7 +13,8 @@ namespace dotNet.Profiles
     {
         public TradeProfile()
         {
-            CreateMap<TradeRespServiceModel, TradeRespViewModel>();
+            CreateMap<TradeRespServiceModel, TradeRespViewModel>()
+                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate.ToString("yyyy-MM-dd")));
             CreateMap<JoinTable, TradeRespViewModel>();
             CreateMap<JoinTable, TradeRespServiceModel>();
             CreateMap<TradeViewModel, TradeServiceModel>();
