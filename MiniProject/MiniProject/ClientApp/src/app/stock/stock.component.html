@@ -1,4 +1,13 @@
-<div>
+<input [(ngModel)]="startDate" type="text" name="startDate" placeholder="StartDate" />
+<select *ngIf="isPages" class="form-control" id="pageSelect" [(ngModel)]="selectedPage">
+  <option *ngFor="let opt of ngOptions"
+          [selected]="opt === ngDropdown"
+          [value]="opt">
+    {{ opt }}
+  </option>
+</select>
+<button (click)="getDataFromBackEnd(startDate)">確認</button>
+<div *ngIf="isFilter " style="margin-top: 50px;">
   <table style="border: 1px solid black; margin: 30px 0 0 30px;">
     <thead>
       <tr>
@@ -11,7 +20,7 @@
         <td width="200px">price</td>
         <td width="200px">lendingPeriod</td>
         <td width="200px">returnDate</td>
-        <td width="200px">Action</td>
+        <td width="200px">{{pageCount}}</td>
       </tr>
     </thead>
     <tbody>

@@ -95,14 +95,16 @@ namespace dotNet.Service
         }
 
         //取得DB所有資料
-        public async Task<List<TradeRespServiceModel>> GetStockListFromDB(int pageIndex, int pageSize, string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
+        public async Task<Tuple<List<TradeRespServiceModel>, int>> GetStockListFromDB(int pageIndex, int pageSize, string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
         {
             //if pageIndex<1, pageIndex=1
             pageIndex = pageIndex < 1 ? 1 : pageIndex;
             var startIndex = (pageIndex - 1) * pageSize;
             var joinTables = (await _stockRepository.JoinAllTable(startIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection)).ToList();
+            var count = await _stockRepository.GetJoinAllTableCount(startIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection);
+            var pages = (int)Math.Ceiling(count / (double)pageSize);
             var tradeRespServiceModels = _mapper.Map<List<TradeRespServiceModel>>(joinTables);
-            return tradeRespServiceModels;
+            return Tuple.Create(tradeRespServiceModels,pages);
         }
 
         //從DB抓取資料，並將status改為2
