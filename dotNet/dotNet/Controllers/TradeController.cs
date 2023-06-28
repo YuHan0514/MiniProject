@@ -25,25 +25,26 @@ namespace dotNet.Controllers
         }
 
         [HttpGet]
-        public async Task<string> InsertDataToDB(string startDate, string endDate)
+        public async Task<string> InsertTwseDataToDB(string startDate, string endDate)
         {
-            return await _service.InsertDataToDB(startDate, endDate);
+            return await _service.InsertTwseDataToDB(startDate, endDate);
         }
 
 
         [HttpGet]
-        public async Task<List<TradeRespViewModel>> GetDataFromDB()
+        public async Task<List<TradeRespViewModel>> GetStockListFromDB(int pageIndex, string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
         {
-            var tradeRespServiceModels = await _service.GetDataFromDB();
+            var pageSize = 10;
+            var tradeRespServiceModels = await _service.GetStockListFromDB(pageIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection);
             var tradeRespViewModels = _mapper.Map<List<TradeRespViewModel>>(tradeRespServiceModels);
             return tradeRespViewModels;
 
         }
 
         [HttpPost]
-        public async Task<string> DeleteStockData(int id)
+        public async Task<string> DeleteStockByStatus(int id)
         {
-            return await _service.DeleteStockData(id);
+            return await _service.DeleteStockByStatus(id);
         }
 
         [HttpPost]

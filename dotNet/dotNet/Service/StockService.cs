@@ -28,9 +28,9 @@ namespace dotNet.Service
             _stockRepository = stockRepository;
             _tradeHelper = tradeHelper;
         }
-        public async Task<StockRespServiceModel> GetStockInfo(string id, DateTime tradeDate)
+        public async Task<StockRespServiceModel> GetStockInfo(string id, string tradeDate)
         {
-            DateTime time = tradeDate.AddDays(-1);
+            DateTime time = DateTime.Parse(tradeDate);
             var closingPriceTables = await _context.ClosingPriceTables.FirstOrDefaultAsync(x => x.TradeDate == time && x.StockId == id);
             return _mapper.Map<StockRespServiceModel>(closingPriceTables);
         }

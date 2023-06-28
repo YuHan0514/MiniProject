@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace dotNet.Controllers
 {
@@ -25,11 +24,11 @@ namespace dotNet.Controllers
             _service = service;
             _mapper = mapper;
         }
-        // GET api/<StockController>/5
+        // 取得某筆資料的昨日收盤價
         [HttpGet]
-        public async Task<StockRespViewModel> GetStockInfo(string id, DateTime tradeDate)
+        public async Task<StockRespViewModel> GetStockInfo(string stockId, string tradeDate)
         {
-            var stockRespServiceModel= await _service.GetStockInfo(id, tradeDate);
+            var stockRespServiceModel= await _service.GetStockInfo(stockId, tradeDate);
             return _mapper.Map<StockRespViewModel>(stockRespServiceModel);
         }
 
