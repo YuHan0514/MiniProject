@@ -6,6 +6,6 @@ namespace dotNet.Interface
 {
     public interface ITradeHelper
     {
-        public Task<List<JoinTable>> GetDataFromURL(string startDate, string endDate);
+        public Task<List<JoinTable>> GetStockListFromTwse(string startDate, string endDate);
     }
 }

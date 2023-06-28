@@ -23,7 +23,7 @@ namespace dotNet.Helper
             Configuration = configuration;
             _twseUrl = configuration.GetValue<string>("TwseUrl");
         }
-        public async Task<List<JoinTable>> GetDataFromURL(string startDate, string endDate)
+        public async Task<List<JoinTable>> GetStockListFromTwse(string startDate, string endDate)
         {
             HttpClient httpClient = _clientFactory.CreateClient();
             string apiUrl = $"{_twseUrl}?StartDate={startDate}&EndDate={endDate}&Response=json";

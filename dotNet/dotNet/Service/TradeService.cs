@@ -31,13 +31,13 @@ namespace dotNet.Service
         }
 
         //取得TWSE資料並新增近DB，startDate固定為DB最後一筆+1天
-        public async Task<string> InsertDataToDB(string startDate, string endDate)
+        public async Task<string> InsertTwseDataToDB(string startDate, string endDate)
         {
             string returnString;
             startDate = _context.ClosingPriceTables.OrderByDescending(a => a.TradeDate).FirstOrDefault().TradeDate.AddDays(1).ToString("yyyyMMdd");
             try
             {
-                var joinTables = await _tradeHelper.GetDataFromURL(startDate, endDate);
+                var joinTables = await _tradeHelper.GetStockListFromTwse(startDate, endDate);
                 var vs = joinTables.Select(x => x.StockId);
                 var stockTables = _context.StockTables.Where(x => vs.Contains(x.StockId)).ToList();
                 var dateTimes = joinTables.Select(x => x.TradeDate);
@@ -95,15 +95,18 @@ namespace dotNet.Service
         }
 
         //取得DB所有資料
-        public async Task<List<TradeRespServiceModel>> GetDataFromDB()
+        public async Task<List<TradeRespServiceModel>> GetStockListFromDB(int pageIndex, int pageSize, string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
         {
-            var joinTables = (await _stockRepository.JoinAllTable()).ToList();
+            //if pageIndex<1, pageIndex=1
+            pageIndex = pageIndex < 1 ? 1 : pageIndex;
+            var startIndex = (pageIndex - 1) * pageSize;
+            var joinTables = (await _stockRepository.JoinAllTable(startIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection)).ToList();
             var tradeRespServiceModels = _mapper.Map<List<TradeRespServiceModel>>(joinTables);
             return tradeRespServiceModels;
         }
 
         //從DB抓取資料，並將status改為2
-        public async Task<string> DeleteStockData(int id)
+        public async Task<string> DeleteStockByStatus(int id)
         {
             string returnString;
             try

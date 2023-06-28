@@ -3,6 +3,7 @@ using dotNet.Interface;
 using dotNet.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,14 +19,18 @@ namespace dotNet.Repository
             _connectString = configuration.GetValue<string>("DBConnectionString");
         }
         public IConfiguration Configuration { get; }
-        
 
-        //join只取status不為2的資料
-        public async Task<IEnumerable<JoinTable>> JoinAllTable()
+
+        ///join只取status不為2的資料
+        ///sortColumn默認為id
+        ///sortDirection默認為正序 DESC
+        public async Task<IEnumerable<JoinTable>> JoinAllTable(int startIndex,int pageSize,string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
         {
+            var startDateTime= DateTime.Parse(startDate);
+            var endDateTime = DateTime.Parse(endDate);
             using (var conn = new SqlConnection(_connectString))
             {
-                string sqlQuery = @"
+                string sqlQuery = $@"
                 SELECT 
                     TradeTable.Id,
                     TradeTable.TradeDate,
@@ -43,16 +48,26 @@ namespace dotNet.Repository
                     LEFT JOIN ClosingPriceTable ON TradeTable.StockId = ClosingPriceTable.StockId
                                                 AND TradeTable.TradeDate = ClosingPriceTable.TradeDate
                 WHERE
-                    TradeTable.Status <> 2";
+                    TradeTable.Status <> 2
+                    AND TradeTable.TradeDate >='{startDate} 00:00:00' AND  TradeTable.TradeDate <='{endDate} 00:00:00'";
 
-
+                if (tradeType != null)
+                {
+                    sqlQuery += $" AND TradeTable.Type = '{tradeType}'";
+                }
+                if (stockId != null)
+                {
+                    sqlQuery += $" AND TradeTable.StockId = '{stockId}'";
+                }
+                sqlQuery += @$" ORDER BY TradeTable.{sortColumn} {sortDirection}
+                                OFFSET {startIndex}ROWS FETCH NEXT {pageSize}ROWS ONLY";
                 var result =await conn.QueryAsync<JoinTable>(sqlQuery);
                 return result;
             }
             
         }
 
-        //join某id的資料
+        ///join某id的資料
         public async Task<JoinTable> JoinAllTableById(int id)
         {
             using (var conn = new SqlConnection(_connectString))

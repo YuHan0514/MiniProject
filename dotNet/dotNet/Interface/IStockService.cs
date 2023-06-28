@@ -8,6 +8,6 @@ namespace dotNet.Interface
 {
     public interface IStockService
     {
-        public Task<StockRespServiceModel> GetStockInfo(string id, DateTime tradeDate);
+        public Task<StockRespServiceModel> GetStockInfo(string id, string tradeDate);
     }
 }
