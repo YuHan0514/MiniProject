@@ -4,6 +4,7 @@ using dotNet.ServiceModels;
 using dotNet.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,24 +28,33 @@ namespace dotNet.Controllers
         [HttpGet]
         public async Task<string> InsertTwseDataToDB(string startDate, string endDate)
         {
-            return await _service.InsertTwseDataToDB(startDate, endDate);
+            var msg = await _service.InsertTwseDataToDB(startDate, endDate);
+            return msg;
         }
 
 
-        [HttpGet]
-        public async Task<List<TradeRespViewModel>> GetStockListFromDB(int pageIndex, string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
+        [HttpPost]
+        public async Task<Tuple<List<TradeRespViewModel>, int>> GetStockListFromDB([FromBody] FrontEndViewModel filterCondition /*string sortColumn, *//*, string endDate, string tradeType, string stockId, string sortDirection*/)
         {
+            //int pageIndex = 1;
+            string sortColumn = "Id";
+            //string startDate = "2023-01-04"; 
+            string endDate = "2023-01-04";
+            string tradeType = null;
+            string stockId = null;
+            string sortDirection = null;
             var pageSize = 10;
-            var tradeRespServiceModels = await _service.GetStockListFromDB(pageIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection);
-            var tradeRespViewModels = _mapper.Map<List<TradeRespViewModel>>(tradeRespServiceModels);
-            return tradeRespViewModels;
+            var tradeRespServiceModels = await _service.GetStockListFromDB(filterCondition.pageIndex, pageSize, sortColumn, filterCondition.startDate, endDate, tradeType, stockId, sortDirection);
+            var tradeRespViewModels = _mapper.Map<List<TradeRespViewModel>>(tradeRespServiceModels.Item1);
+            return Tuple.Create(tradeRespViewModels, tradeRespServiceModels.Item2);
 
         }
 
         [HttpPost]
         public async Task<string> DeleteStockByStatus(int id)
         {
-            return await _service.DeleteStockByStatus(id);
+            var msg= await _service.DeleteStockByStatus(id);
+            return msg;
         }
 
         [HttpPost]
@@ -59,7 +69,8 @@ namespace dotNet.Controllers
         public async Task<string> UpdateStockById(TradeViewModel trade)
         {
             var tradeService = _mapper.Map<TradeServiceModel>(trade);
-            return await _service.UpdateStockById(tradeService);
+            var msg = await _service.UpdateStockById(tradeService);
+            return msg;
         }
     }
 }
