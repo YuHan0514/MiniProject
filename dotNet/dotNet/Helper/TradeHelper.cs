@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using dotNet.Interface;
-using dotNet.Models;
+using dotNet.DBModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -23,10 +23,11 @@ namespace dotNet.Helper
             Configuration = configuration;
             _twseUrl = configuration.GetValue<string>("TwseUrl");
         }
-        public async Task<List<JoinTable>> GetStockListFromTwse(string startDate, string endDate)
+        public async Task<List<JoinTable>> GetStockListFromTwse(string startDate, DateTime endDate)
         {
+            var endDateString = endDate.ToString("yyyyMMdd");
             HttpClient httpClient = _clientFactory.CreateClient();
-            string apiUrl = $"{_twseUrl}?StartDate={startDate}&EndDate={endDate}&Response=json";
+            string apiUrl = $"{_twseUrl}?StartDate={startDate}&EndDate={endDateString}&Response=json";
             var twseData = await httpClient.GetStringAsync(apiUrl);
             var twse = JsonSerializer.Deserialize<TwseTable>(twseData);
             List<JoinTable> joinTables = _mapper.Map<List<JoinTable>>(twse.data);

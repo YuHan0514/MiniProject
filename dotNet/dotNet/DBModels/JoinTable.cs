@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNet.Models
+namespace dotNet.DBModels
 {
     public class JoinTable
     {
@@ -13,7 +13,7 @@ namespace dotNet.Models
         public float Fee { get; set; }
         public float? Price { get; set; }
         public int LendingPeriod { get; set; }
-        public DateTime ReturnDate => TradeDate.AddDays(LendingPeriod);
+        public DateTime ReturnDate { get; set; }
         public int Status { get; set; }
     }
 }

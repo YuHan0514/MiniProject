@@ -8,6 +8,12 @@ namespace dotNet.ViewModels
     public class FrontEndViewModel
     {
         public int pageIndex { get; set; }
-        public string startDate { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+        public string tradeType { get; set; }
+        public string stockId { get; set; }
+        public string sortColumn { get; set; }
+        public string sortDirection { get; set; }
+
     }
 }
