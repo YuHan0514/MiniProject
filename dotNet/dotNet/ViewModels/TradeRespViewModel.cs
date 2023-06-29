@@ -13,7 +13,7 @@ namespace dotNet.ViewModels
         public float Fee { get; set; }
         public float? Price { get; set; }
         public int LendingPeriod { get; set; }
-        public string ReturnDate => DateTime.Parse(TradeDate).AddDays(LendingPeriod).ToString("yyyy-MM-dd");
+        public string ReturnDate { get; set; }
         public int Status { get; set; }
     }
 }

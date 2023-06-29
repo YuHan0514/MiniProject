@@ -1,33 +1,46 @@
-<input [(ngModel)]="startDate" type="text" name="startDate" placeholder="StartDate" />
-<select *ngIf="isPages" class="form-control" id="pageSelect" [(ngModel)]="selectedPage">
+資料時間
+<input type="date" [(ngModel)]="startDate" />至
+<input type="date" [(ngModel)]="endDate" />
+<br>
+交易方式
+<select id="typeSelect" [(ngModel)]="selectedType">
+  <option value=""></option>
+  <option value="F">定價</option>
+  <option value="C">競價</option>
+  <option value="N">議借</option>
+</select>
+<br>
+股票代碼
+<input [(ngModel)]="stockCode" type="text" name="stockCode" />
+<button (click)="getDataFromBackEnd(1,'Id','↑')">確認</button>
+<br>
+<select *ngIf="isPages" id="pageSelect" [(ngModel)]="selectedPage" (click)="getDataFromBackEndByPage()">
+  <option value="1">頁數</option>
   <option *ngFor="let opt of ngOptions"
-          [selected]="opt === ngDropdown"
+          [selected]="opt === selectedPage"
           [value]="opt">
     {{ opt }}
   </option>
 </select>
-<button (click)="getDataFromBackEnd(startDate)">確認</button>
 <div *ngIf="isFilter " style="margin-top: 50px;">
   <table style="border: 1px solid black; margin: 30px 0 0 30px;">
     <thead>
       <tr>
-        <td width="200px">tradeDate</td>
-        <td width="400px">stockCode</td>
-        <!--<td width="200px">name</td>-->
-        <td width="200px">type</td>
-        <td width="200px">volume</td>
-        <td width="200px">fee</td>
-        <td width="200px">price</td>
-        <td width="200px">lendingPeriod</td>
-        <td width="200px">returnDate</td>
+        <td width="200px" (click)="sortData('TradeDate',tradeDateDirection)">TradeDate {{tradeDateDirection}}</td>
+        <td width="400px" (click)="sortData('StockId',stockCodeDirection)">StockCode {{stockCodeDirection}}</td>
+        <td width="200px" (click)="sortData('Type',typeDirection)">Type {{typeDirection}}</td>
+        <td width="200px" (click)="sortData('Volume',volumeDirection)">Volume {{volumeDirection}}</td>
+        <td width="200px" (click)="sortData('Fee',feeDirection)">Fee {{feeDirection}}</td>
+        <td width="200px" (click)="sortData('Price',priceDirection)">Price {{priceDirection}}</td>
+        <td width="200px" (click)="sortData('LendingPeriod',lendingPerioDirection)">LendingPeriod {{lendingPerioDirection}}</td>
+        <td width="200px" (click)="sortData('ReturnDate',returnDateDirection)">ReturnDate {{returnDateDirection}}</td>
         <td width="200px">{{pageCount}}</td>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let stock of stockArray">
         <td>{{stock.tradeDate}}</td>
-        <td>{{stock.stockId}} {{stock.name}}</td>
-        <!--<td>{{stock.name}}</td>-->
+        <td (click)="getStockInfo(stock.stockId,stock.tradeDate,stock.name)">{{stock.stockId}} {{stock.name}}</td>
         <td>{{stock.type}}</td>
         <td>{{stock.volume}}</td>
         <td>{{stock.fee}}</td>

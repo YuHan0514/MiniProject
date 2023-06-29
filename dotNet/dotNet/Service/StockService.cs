@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using dotNet.Interface;
-using dotNet.Models;
+using dotNet.DBModels;
 using dotNet.ServiceModels;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace dotNet.Models
+namespace dotNet.DBModels
 {
     public class TwseTable
     {

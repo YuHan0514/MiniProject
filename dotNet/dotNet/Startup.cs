@@ -1,6 +1,6 @@
 using dotNet.Helper;
 using dotNet.Interface;
-using dotNet.Models;
+using dotNet.DBModels;
 using dotNet.Repository;
 using dotNet.Service;
 using Microsoft.AspNetCore.Builder;

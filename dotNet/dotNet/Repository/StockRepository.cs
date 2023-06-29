@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using dotNet.Interface;
-using dotNet.Models;
+using dotNet.DBModels;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -24,10 +24,16 @@ namespace dotNet.Repository
         ///join只取status不為2的資料
         ///sortColumn默認為id
         ///sortDirection默認為正序 反序=DESC
-        public async Task<IEnumerable<JoinTable>> JoinAllTable(int startIndex,int pageSize,string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
+        public async Task<IEnumerable<JoinTable>> JoinAllTable(int startIndex,int pageSize,string sortColumn, DateTime startDate, DateTime endDate, string tradeType, string stockId, string sortDirection)
         {
-            var startDateTime= DateTime.Parse(startDate);
-            var endDateTime = DateTime.Parse(endDate);
+            if (sortColumn == "Price")
+                sortColumn = "ClosingPriceTable.Price";
+            //else if (sortColumn == "ReturnDate")
+            //    sortColumn = $"TradeTable.TradeDate {sortDirection}, TradeTable.LendingPeriod";
+            else
+                sortColumn = $"TradeTable.{sortColumn}";
+            var startDateTime= startDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var endDateTime = endDate.ToString("yyyy-MM-dd HH:mm:ss");
             using (var conn = new SqlConnection(_connectString))
             {
                 string sqlQuery = $@"
@@ -41,7 +47,8 @@ namespace dotNet.Repository
                     TradeTable.Fee,
                     ClosingPriceTable.Price,
                     TradeTable.LendingPeriod,
-                    TradeTable.Status
+                    TradeTable.Status,
+                    TradeTable.ReturnDate
                 FROM 
                     TradeTable
                     LEFT JOIN StockTable ON TradeTable.StockId = StockTable.StockId
@@ -49,17 +56,17 @@ namespace dotNet.Repository
                                                 AND TradeTable.TradeDate = ClosingPriceTable.TradeDate
                 WHERE
                     TradeTable.Status <> 2
-                    AND TradeTable.TradeDate >='{startDate} 00:00:00' AND  TradeTable.TradeDate <='{endDate} 00:00:00'";
+                    AND TradeTable.TradeDate >='{startDateTime}' AND  TradeTable.TradeDate <='{endDateTime}'";
 
-                if (tradeType != null)
+                if (tradeType != "")
                 {
                     sqlQuery += $" AND TradeTable.Type = '{tradeType}'";
                 }
-                if (stockId != null)
+                if (stockId != "")
                 {
                     sqlQuery += $" AND TradeTable.StockId = '{stockId}'";
                 }
-                sqlQuery += @$" ORDER BY TradeTable.{sortColumn} {sortDirection}
+                sqlQuery += @$" ORDER BY {sortColumn} {sortDirection}
                                 OFFSET {startIndex}ROWS FETCH NEXT {pageSize}ROWS ONLY";
                 var result =await conn.QueryAsync<JoinTable>(sqlQuery);
                 return result;
@@ -67,10 +74,10 @@ namespace dotNet.Repository
             
         }
 
-        public async Task<int> GetJoinAllTableCount(int startIndex, int pageSize, string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
+        public async Task<int> GetJoinAllTableCount(DateTime startDate, DateTime endDate, string tradeType, string stockId)
         {
-            var startDateTime = DateTime.Parse(startDate);
-            var endDateTime = DateTime.Parse(endDate);
+            var startDateTime = startDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var endDateTime = endDate.ToString("yyyy-MM-dd HH:mm:ss");
             using (var conn = new SqlConnection(_connectString))
             {
                 string sqlQuery = $@"
@@ -84,7 +91,8 @@ namespace dotNet.Repository
                     TradeTable.Fee,
                     ClosingPriceTable.Price,
                     TradeTable.LendingPeriod,
-                    TradeTable.Status
+                    TradeTable.Status,
+                    TradeTable.ReturnDate
                 FROM 
                     TradeTable
                     LEFT JOIN StockTable ON TradeTable.StockId = StockTable.StockId
@@ -92,13 +100,13 @@ namespace dotNet.Repository
                                                 AND TradeTable.TradeDate = ClosingPriceTable.TradeDate
                 WHERE
                     TradeTable.Status <> 2
-                    AND TradeTable.TradeDate >='{startDate} 00:00:00' AND  TradeTable.TradeDate <='{endDate} 00:00:00'";
+                    AND TradeTable.TradeDate >='{startDateTime}' AND  TradeTable.TradeDate <='{endDateTime}'";
 
-                if (tradeType != null)
+                if (tradeType != "")
                 {
                     sqlQuery += $" AND TradeTable.Type = '{tradeType}'";
                 }
-                if (stockId != null)
+                if (stockId != "")
                 {
                     sqlQuery += $" AND TradeTable.StockId = '{stockId}'";
                 }
@@ -125,7 +133,8 @@ namespace dotNet.Repository
                     TradeTable.Fee,
                     ClosingPriceTable.Price,
                     TradeTable.LendingPeriod,
-                    TradeTable.Status
+                    TradeTable.Status,
+                    TradeTable.ReturnDate
                 FROM 
                     TradeTable
                     LEFT JOIN StockTable ON TradeTable.StockId = StockTable.StockId

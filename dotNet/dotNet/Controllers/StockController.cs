@@ -24,12 +24,13 @@ namespace dotNet.Controllers
             _service = service;
             _mapper = mapper;
         }
-        // 取得某筆資料的昨日收盤價
-        [HttpGet]
-        public async Task<StockRespViewModel> GetStockInfo(string stockId, string tradeDate)
+        // 取得某筆資料的昨收價
+        [HttpPost]
+        public async Task<string> GetStockInfo([FromBody] GetStockInfoViewModel searchStockInfo)
         {
-            var stockRespServiceModel= await _service.GetStockInfo(stockId, tradeDate);
-            return _mapper.Map<StockRespViewModel>(stockRespServiceModel);
+            var stockRespServiceModel= await _service.GetStockInfo(searchStockInfo.stockId, searchStockInfo.searchDate);
+            var stockRespViewModel= _mapper.Map<StockRespViewModel>(stockRespServiceModel);
+            return stockRespViewModel.Price.ToString();
         }
 
         

@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace dotNet.Models
+namespace dotNet.DBModels
 {
     public partial class MiniProjectDBContext : DbContext
     {
@@ -98,6 +100,8 @@ namespace dotNet.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.Property(e => e.ReturnDate).HasColumnType("date");
+
                 entity.Property(e => e.StockId)
                     .IsRequired()
                     .HasMaxLength(10)
@@ -106,7 +110,6 @@ namespace dotNet.Models
                 entity.Property(e => e.TradeDate).HasColumnType("date");
 
                 entity.Property(e => e.Type)
-                    .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
@@ -120,7 +123,7 @@ namespace dotNet.Models
                     .WithMany(p => p.TradeTables)
                     .HasForeignKey(d => d.StockId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TradeTabl__Stock__5165187F");
+                    .HasConstraintName("FK__TradeTabl__Stock__5CD6CB2B");
             });
 
             OnModelCreatingPartial(modelBuilder);

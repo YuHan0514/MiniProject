@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using dotNet.Interface;
-using dotNet.Models;
+using dotNet.DBModels;
 using dotNet.ServiceModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,7 +31,7 @@ namespace dotNet.Service
         }
 
         //取得TWSE資料並新增近DB，startDate固定為DB最後一筆+1天
-        public async Task<string> InsertTwseDataToDB(string startDate, string endDate)
+        public async Task<string> InsertTwseDataToDB(string startDate, DateTime endDate)
         {
             string returnString;
             startDate = _context.ClosingPriceTables.OrderByDescending(a => a.TradeDate).FirstOrDefault().TradeDate.AddDays(1).ToString("yyyyMMdd");
@@ -60,7 +60,6 @@ namespace dotNet.Service
                         stockTables.Add(stockTable);
                     }
 
-
                     if (closingPriceTables.Where(x => x.TradeDate == joinTable.TradeDate && x.StockId == joinTable.StockId).ToList().Count == 0)
                     {
                         var closingPriceTable = _mapper.Map<ClosingPriceTable>(joinTable);
@@ -73,7 +72,6 @@ namespace dotNet.Service
                         }
                         closingPriceTables.Add(closingPriceTable);
                     }
-
                     var tradeTable = _mapper.Map<TradeTable>(joinTable);
                     tradeTable.CreateDate = today;
                     tradeTable.CreateUser = createUser;
@@ -95,13 +93,25 @@ namespace dotNet.Service
         }
 
         //取得DB所有資料
-        public async Task<Tuple<List<TradeRespServiceModel>, int>> GetStockListFromDB(int pageIndex, int pageSize, string sortColumn, string startDate, string endDate, string tradeType, string stockId, string sortDirection)
+        public async Task<Tuple<List<TradeRespServiceModel>, int>> GetStockListFromDB(int pageIndex, int pageSize, string sortColumn, DateTime startDate, DateTime endDate, string tradeType, string stockId, string sortDirection)
         {
             //if pageIndex<1, pageIndex=1
             pageIndex = pageIndex < 1 ? 1 : pageIndex;
             var startIndex = (pageIndex - 1) * pageSize;
+            switch (sortDirection)
+            {
+                default:
+                    sortDirection = "";
+                    break;
+                case "↑":
+                    sortDirection = "";
+                    break;
+                case "↓":
+                    sortDirection = "DESC";
+                    break;
+            }
             var joinTables = (await _stockRepository.JoinAllTable(startIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection)).ToList();
-            var count = await _stockRepository.GetJoinAllTableCount(startIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection);
+            var count = await _stockRepository.GetJoinAllTableCount(startDate, endDate, tradeType, stockId);
             var pages = (int)Math.Ceiling(count / (double)pageSize);
             var tradeRespServiceModels = _mapper.Map<List<TradeRespServiceModel>>(joinTables);
             return Tuple.Create(tradeRespServiceModels,pages);

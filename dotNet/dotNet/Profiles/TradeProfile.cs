@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using dotNet.Models;
+using dotNet.DBModels;
 using dotNet.ServiceModels;
 using dotNet.ViewModels;
 using System;
@@ -14,10 +14,12 @@ namespace dotNet.Profiles
         public TradeProfile()
         {
             CreateMap<TradeRespServiceModel, TradeRespViewModel>()
-                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate.ToString("yyyy-MM-dd")));
+                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate.ToString("yyyy-MM-dd")))
+                     .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src => src.ReturnDate.ToString("yyyy-MM-dd")));
             CreateMap<ClosingPriceTable, StockRespServiceModel>();
             CreateMap<JoinTable, TradeRespViewModel>();
-            CreateMap<JoinTable, TradeRespServiceModel>();
+            CreateMap<JoinTable, TradeRespServiceModel>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => RestoredType(src.Type)));
             CreateMap<TradeViewModel, TradeServiceModel>();
             CreateMap<StockRespServiceModel, StockRespViewModel>();
             CreateMap<JoinTable, StockTable>();
@@ -29,7 +31,8 @@ namespace dotNet.Profiles
                     .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => Convert.ToInt64(src[3].ToString().Replace(",", ""))))
                     .ForMember(dest => dest.Fee, opt => opt.MapFrom(src => float.Parse(src[4].ToString())))
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => float.Parse(src[5].ToString())))
-                    .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src[7].ToString()));
+                    .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src[7].ToString()))
+                    .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src => TransDateTime(src[6].ToString())));
 
             CreateMap<JoinTable, StockTable>()
                     .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
@@ -41,7 +44,8 @@ namespace dotNet.Profiles
                     .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
                     .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
                     .ForMember(dest => dest.Fee, opt => opt.MapFrom(src => src.Fee))
-                    .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src.LendingPeriod));
+                    .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src.LendingPeriod))
+                    .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src => src.ReturnDate));
 
             CreateMap<JoinTable, ClosingPriceTable>()
                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate))
@@ -54,7 +58,8 @@ namespace dotNet.Profiles
                     .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
                     .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
                     .ForMember(dest => dest.Fee, opt => opt.MapFrom(src => src.Fee))
-                    .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src.LendingPeriod));
+                    .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src.LendingPeriod))
+                    .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src => src.ReturnDate));
 
         }
         private static string GetStockId(string stockString)
@@ -92,6 +97,24 @@ namespace dotNet.Profiles
             }
             return type;
         }
-        
-}
+        private static string RestoredType(string type)
+        {
+            switch (type)
+            {
+                default:
+                    type = null;
+                    break;
+                case "F":
+                    type = "定價";
+                    break;
+                case "C":
+                    type = "競價";
+                    break;
+                case "N":
+                    type = "議借";
+                    break;
+            }
+            return type;
+        }
+    }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace dotNet.Models
+namespace dotNet.DBModels
 {
     public partial class StockTable
     {

@@ -26,7 +26,7 @@ namespace dotNet.Controllers
         }
 
         [HttpGet]
-        public async Task<string> InsertTwseDataToDB(string startDate, string endDate)
+        public async Task<string> InsertTwseDataToDB(string startDate, DateTime endDate)
         {
             var msg = await _service.InsertTwseDataToDB(startDate, endDate);
             return msg;
@@ -37,14 +37,14 @@ namespace dotNet.Controllers
         public async Task<Tuple<List<TradeRespViewModel>, int>> GetStockListFromDB([FromBody] FrontEndViewModel filterCondition /*string sortColumn, *//*, string endDate, string tradeType, string stockId, string sortDirection*/)
         {
             //int pageIndex = 1;
-            string sortColumn = "Id";
+            //string sortColumn = "Id";
             //string startDate = "2023-01-04"; 
-            string endDate = "2023-01-04";
-            string tradeType = null;
-            string stockId = null;
-            string sortDirection = null;
+            //string endDate = "2023-01-04";
+            //string tradeType = null;
+            //string stockId = "";
+            //string sortDirection = "";
             var pageSize = 10;
-            var tradeRespServiceModels = await _service.GetStockListFromDB(filterCondition.pageIndex, pageSize, sortColumn, filterCondition.startDate, endDate, tradeType, stockId, sortDirection);
+            var tradeRespServiceModels = await _service.GetStockListFromDB(filterCondition.pageIndex, pageSize, filterCondition.sortColumn, filterCondition.startDate, filterCondition.endDate, filterCondition.tradeType, filterCondition.stockId, filterCondition.sortDirection);
             var tradeRespViewModels = _mapper.Map<List<TradeRespViewModel>>(tradeRespServiceModels.Item1);
             return Tuple.Create(tradeRespViewModels, tradeRespServiceModels.Item2);
 

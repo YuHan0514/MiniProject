@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
-namespace dotNet.Models
+namespace dotNet.DBModels
 {
     public partial class TradeTable
     {
@@ -18,6 +19,7 @@ namespace dotNet.Models
         public DateTime? CreateDate { get; set; }
         public string UpdateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
+        public DateTime ReturnDate { get; set; }
 
         public virtual StockTable Stock { get; set; }
     }
