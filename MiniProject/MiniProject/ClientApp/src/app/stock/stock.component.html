@@ -34,7 +34,7 @@
         <td width="200px" (click)="sortData('Price',priceDirection)">Price {{priceDirection}}</td>
         <td width="200px" (click)="sortData('LendingPeriod',lendingPerioDirection)">LendingPeriod {{lendingPerioDirection}}</td>
         <td width="200px" (click)="sortData('ReturnDate',returnDateDirection)">ReturnDate {{returnDateDirection}}</td>
-        <td width="200px">{{pageCount}}</td>
+        <td width="200px">Action</td>
       </tr>
     </thead>
     <tbody>
@@ -48,8 +48,8 @@
         <td>{{stock.lendingPeriod}}</td>
         <td>{{stock.returnDate}}</td>
         <td>
-          <!--<button [routerLink]="['/edit', weather.id, weather.date, weather.temperatureC, weather.summary]">修改</button>
-          <button (click)="deleteWeather(weather.id)">刪除</button>-->
+          <!--<button [routerLink]="['/edit', weather.id, weather.date, weather.temperatureC, weather.summary]">修改</button>-->
+          <button (click)="deleteStock(stock.id)">刪除</button>
         </td>
       </tr>
     </tbody>

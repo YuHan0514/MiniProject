@@ -3,9 +3,6 @@ using dotNet.Interface;
 using dotNet.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -26,7 +23,7 @@ namespace dotNet.Controllers
         }
         // 取得某筆資料的昨收價
         [HttpPost]
-        public async Task<string> GetStockInfo([FromBody] GetStockInfoViewModel searchStockInfo)
+        public async Task<string> GetStockInfo([FromBody] StockViewModel searchStockInfo)
         {
             var stockRespServiceModel= await _service.GetStockInfo(searchStockInfo.stockId, searchStockInfo.searchDate);
             var stockRespViewModel= _mapper.Map<StockRespViewModel>(stockRespServiceModel);

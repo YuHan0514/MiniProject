@@ -30,7 +30,7 @@ namespace dotNet.Service
             _tradeHelper = tradeHelper;
         }
 
-        //取得TWSE資料並新增近DB，startDate固定為DB最後一筆+1天
+        ///取得TWSE資料並新增近DB，startDate固定為DB最後一筆+1天
         public async Task<string> InsertTwseDataToDB(string startDate, DateTime endDate)
         {
             string returnString;
@@ -92,7 +92,7 @@ namespace dotNet.Service
             return returnString;
         }
 
-        //取得DB所有資料
+        ///取得前端要求的的DB資料
         public async Task<Tuple<List<TradeRespServiceModel>, int>> GetStockListFromDB(int pageIndex, int pageSize, string sortColumn, DateTime startDate, DateTime endDate, string tradeType, string stockId, string sortDirection)
         {
             //if pageIndex<1, pageIndex=1
@@ -110,14 +110,14 @@ namespace dotNet.Service
                     sortDirection = "DESC";
                     break;
             }
-            var joinTables = (await _stockRepository.JoinAllTable(startIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection)).ToList();
-            var count = await _stockRepository.GetJoinAllTableCount(startDate, endDate, tradeType, stockId);
-            var pages = (int)Math.Ceiling(count / (double)pageSize);
+            var joinTables = (await _stockRepository.JoinAndFilterAllTable(startIndex, pageSize, sortColumn, startDate, endDate, tradeType, stockId, sortDirection)).ToList();
+            var count = await _stockRepository.GetJoinAndFilterAllTableCount(startDate, endDate, tradeType, stockId);
+            var pageCount = (int)Math.Ceiling(count / (double)pageSize);
             var tradeRespServiceModels = _mapper.Map<List<TradeRespServiceModel>>(joinTables);
-            return Tuple.Create(tradeRespServiceModels,pages);
+            return Tuple.Create(tradeRespServiceModels, pageCount);
         }
 
-        //從DB抓取資料，並將status改為2
+        ///從DB抓取要刪除的資料，並將status改為2
         public async Task<string> DeleteStockByStatus(int id)
         {
             string returnString;
@@ -128,7 +128,7 @@ namespace dotNet.Service
                 tradeTable.UpdateDate = DateTime.Today;
                 tradeTable.UpdateUser = "User";
                 _context.SaveChanges();
-                returnString = "200 資料刪除完成";
+                returnString = "200";
             }
             catch (Exception ex)
             {
@@ -138,16 +138,16 @@ namespace dotNet.Service
             return returnString;
         }
 
-        //利用ID從DB抓取一筆資料
+        ///利用ID從DB抓取一筆資料
         public async Task<TradeRespServiceModel> GetStockById(int id)
         {
-            var joinTable = await _stockRepository.JoinAllTableById(id);
+            var joinTable = await _stockRepository.GetTradeInfoById(id);
             var tradeRespServiceModel = _mapper.Map<TradeRespServiceModel>(joinTable);
             return tradeRespServiceModel;
         }
 
-        //修改DB中一筆資料，只修改TradeTables
-        public async Task<string> UpdateStockById(TradeServiceModel stock)
+        ///修改DB中一筆資料，只修改TradeTables
+        public async Task<string> UpdateTradeInfoById(TradeServiceModel stock)
         {
             string returnString;
             try
@@ -158,7 +158,7 @@ namespace dotNet.Service
                 tradeTable.UpdateDate = DateTime.Today;
                 tradeTable.UpdateUser = "User";
                 _context.SaveChanges();
-                returnString = "200 資料更新完成";
+                returnString = "200";
             }
             catch (Exception ex)
             {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace dotNet.ViewModels
 {
-    public class GetStockInfoViewModel
+    public class StockViewModel
     {
         public string stockId { get; set; }
         public string searchDate { get; set; }
