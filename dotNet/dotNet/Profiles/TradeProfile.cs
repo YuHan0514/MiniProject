@@ -20,7 +20,7 @@ namespace dotNet.Profiles
             CreateMap<JoinTable, TradeRespViewModel>();
             CreateMap<JoinTable, TradeRespServiceModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => RestoredType(src.Type)));
-            CreateMap<TradeViewModel, TradeServiceModel>();
+            CreateMap<TradeRespViewModel, TradeServiceModel>();
             CreateMap<StockRespServiceModel, StockRespViewModel>();
             CreateMap<JoinTable, StockTable>();
             CreateMap<List<object>, JoinTable>()

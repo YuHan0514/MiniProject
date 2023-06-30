@@ -4,16 +4,12 @@ namespace dotNet.ViewModels
 {
     public class TradeViewModel
     {
-        public int Id { get; set; }
-        public DateTime TradeDate { get; set; }
-        public string StockId { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public int Volume { get; set; }
-        public float Fee { get; set; }
-        public float? Price { get; set; }
-        public int LendingPeriod { get; set; }
-        public DateTime ReturnDate { get; set; }
-        public int Status { get; set; }
+        public int pageIndex { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+        public string tradeType { get; set; }
+        public string stockId { get; set; }
+        public string sortColumn { get; set; }
+        public string sortDirection { get; set; }
     }
 }

@@ -34,24 +34,17 @@ namespace dotNet.Controllers
 
 
         [HttpPost]
-        public async Task<Tuple<List<TradeRespViewModel>, int>> GetStockListFromDB([FromBody] FrontEndViewModel filterCondition /*string sortColumn, *//*, string endDate, string tradeType, string stockId, string sortDirection*/)
+        public async Task<Tuple<List<TradeRespViewModel>, int>> GetStockListFromDB([FromBody] TradeViewModel filterCondition)
         {
-            //int pageIndex = 1;
-            //string sortColumn = "Id";
-            //string startDate = "2023-01-04"; 
-            //string endDate = "2023-01-04";
-            //string tradeType = null;
-            //string stockId = "";
-            //string sortDirection = "";
             var pageSize = 10;
             var tradeRespServiceModels = await _service.GetStockListFromDB(filterCondition.pageIndex, pageSize, filterCondition.sortColumn, filterCondition.startDate, filterCondition.endDate, filterCondition.tradeType, filterCondition.stockId, filterCondition.sortDirection);
             var tradeRespViewModels = _mapper.Map<List<TradeRespViewModel>>(tradeRespServiceModels.Item1);
-            return Tuple.Create(tradeRespViewModels, tradeRespServiceModels.Item2);
-
+            var pageCount = tradeRespServiceModels.Item2;
+            return Tuple.Create(tradeRespViewModels, pageCount);
         }
 
         [HttpPost]
-        public async Task<string> DeleteStockByStatus(int id)
+        public async Task<string> DeleteStockByStatus([FromBody]int id)
         {
             var msg= await _service.DeleteStockByStatus(id);
             return msg;
@@ -66,10 +59,10 @@ namespace dotNet.Controllers
         }
 
         [HttpPost]
-        public async Task<string> UpdateStockById(TradeViewModel trade)
+        public async Task<string> UpdateStockById(TradeRespViewModel trade)
         {
             var tradeService = _mapper.Map<TradeServiceModel>(trade);
-            var msg = await _service.UpdateStockById(tradeService);
+            var msg = await _service.UpdateTradeInfoById(tradeService);
             return msg;
         }
     }

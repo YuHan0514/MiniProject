@@ -15,6 +15,6 @@ namespace dotNet.Interface
 
         public Task<TradeRespServiceModel> GetStockById(int id);
 
-        public Task<string> UpdateStockById(TradeServiceModel stock);
+        public Task<string> UpdateTradeInfoById(TradeServiceModel stock);
     }
 }

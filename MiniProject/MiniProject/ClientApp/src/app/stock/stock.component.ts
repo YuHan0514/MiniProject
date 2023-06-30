@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Modal01Component } from '../modal01/modal01.component';
+import { Modal02Component } from '../modal02/modal02.component';
 import { StockInfoService } from '../stock-info.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
@@ -11,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class StockComponent implements OnInit{
   constructor(private http: HttpClient, private dataSvc: StockInfoService, private ngbModal: NgbModal) { }
-  stockArray: { tradeDate: string, stockId: string, name: string, type: string, volume: number, fee: Float32Array, price: Float32Array, lendingPeriod: number, returnDate: string }[] = [];
+  stockArray: {id:number, tradeDate: string, stockId: string, name: string, type: string, volume: number, fee: Float32Array, price: Float32Array, lendingPeriod: number, returnDate: string }[] = [];
   message!:string;
   pageCount: number = 0;
   isFilter: boolean = false;
@@ -24,6 +25,7 @@ export class StockComponent implements OnInit{
   selectedPage: number = 1;
   sortColumn: string = "Id";
   sortDirection: string = "↑";
+  deleteReturnMsg: string = "";
 
   tradeDateDirection: string = "↑";
   stockCodeDirection: string = "－";
@@ -34,7 +36,7 @@ export class StockComponent implements OnInit{
   lendingPerioDirection: string = "－";
   returnDateDirection: string = "－";
 
-  private getHeaders() {
+  getHeaders() {
     let headers = new HttpHeaders();
     headers = headers.append('content-type', 'application/json')
     return headers
@@ -92,6 +94,7 @@ export class StockComponent implements OnInit{
     }
     this.getDataFromBackEnd(1, tittle, direction);
   }
+
   iniDirection() {
     this.tradeDateDirection = "－";
     this.stockCodeDirection = "－";
@@ -150,7 +153,21 @@ export class StockComponent implements OnInit{
       this.isPages = true;
     })
   }
-
+  deleteStock(id: number) {
+    const modal = this.ngbModal.open(Modal02Component);
+    let url = "https://localhost:44320/Trade/DeleteStockByStatus";
+    modal.result.then(
+      (result) => {
+        if (result == true) {
+          this.http.post(url, id, { headers: this.getHeaders() }).subscribe((res: any) => {
+            this.deleteReturnMsg = res;
+            this.getDataFromBackEndByPage();
+          })
+        }
+      }
+    )
+    
+  }
   ngOnInit(): void {
     /*this.getDataFromBackEnd();*/
   }

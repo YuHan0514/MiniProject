@@ -16,7 +16,6 @@ export class Modal01Component implements OnInit {
   }
 
   confirm() {
-    /*alert(Text);*/
     this.activeModal.close(true);
   }
 }
