@@ -20,8 +20,11 @@ namespace dotNet.Profiles
             CreateMap<JoinTable, TradeRespViewModel>();
             CreateMap<JoinTable, TradeRespServiceModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => RestoredType(src.Type)));
-            CreateMap<TradeRespViewModel, TradeServiceModel>();
+            CreateMap<TradeViewModel, TradeServiceModel>();
+            CreateMap<TradeQueryViewModel, TradeQueryServiceModel>();
+            CreateMap<TradeQueryRespServiceModel, TradeQueryRespViewModel>();
             CreateMap<StockRespServiceModel, StockRespViewModel>();
+            CreateMap<StockViewModel, StockServiceModel>();
             CreateMap<JoinTable, StockTable>();
             CreateMap<List<object>, JoinTable>()
                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => TransDateTime(src[0].ToString())))

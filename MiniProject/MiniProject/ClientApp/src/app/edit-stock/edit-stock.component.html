@@ -1,0 +1,39 @@
+<br>
+<button (click)="goBack()">上一頁</button>
+<div *ngIf="isEdit " style="margin-top: 10px;">
+  <table style="border: 1px solid black; margin: 0 20px 0 20px;">
+    <thead>
+      <tr>
+        <td width="200px">TradeDate</td>
+        <td width="400px">StockCode</td>
+        <td width="200px">Type</td>
+        <td width="200px">Volume </td>
+        <td width="200px">Fee</td>
+        <td width="200px">Price </td>
+        <td width="200px">LendingPeriod </td>
+        <td width="200px">ReturnDate</td>
+        <td width="200px">Action</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{stock.tradeDate}}</td>
+        <td>{{stock.stockId}} {{stock.name}}</td>
+        <td>
+          <select id="typeSelect" [(ngModel)]="stock.type">
+            <option value="F">定價</option>
+            <option value="C">競價</option>
+            <option value="N">議借</option>
+          </select>
+        </td>
+        <td><input style="width: 5em" [(ngModel)]="stock.volume" type="number" name="editVolume" value={{stock.volume}} required /></td>
+        <td><input style="width: 5em" [(ngModel)]="stock.fee" type="number" step="0.01" name="editFee" value={{stock.fee}} required /></td>
+        <td>{{stock.price}}</td>
+        <td><input style="width: 5em" [(ngModel)]="stock.lendingPeriod" type="number" name="editLendingPeriod" value={{stock.lendingPeriod}} required /></td>
+        <td><input  type="date" [(ngModel)]="stock.returnDate" /></td>
+        <td><button (click)="editStockData()">修改資料</button></td>
+      </tr>
+    </tbody>
+  </table>
+  
+</div>

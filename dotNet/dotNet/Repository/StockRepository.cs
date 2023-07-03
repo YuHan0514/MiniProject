@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using dotNet.DBModels;
 using dotNet.Interface;
+using dotNet.ServiceModels;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,31 +41,31 @@ namespace dotNet.Repository
         ///join只取status不為2的資料
         ///sortColumn默認為id
         ///sortDirection默認為正序 反序=DESC
-        public async Task<IEnumerable<JoinTable>> JoinAndFilterAllTable(int startIndex,int pageSize,string sortColumn, DateTime startDate, DateTime endDate, string tradeType, string stockId, string sortDirection)
+        public async Task<IEnumerable<JoinTable>> JoinAndFilterAllTable(TradeQueryServiceModel tradeQueryServiceModel)
         {
-            if (sortColumn == "Price")
-                sortColumn = "ClosingPriceTable.Price";
+            if (tradeQueryServiceModel.sortColumn == "Price")
+                tradeQueryServiceModel.sortColumn = "ClosingPriceTable.Price";
             else
-                sortColumn = $"TradeTable.{sortColumn}";
-            var startDateTime= startDate.ToString("yyyy-MM-dd HH:mm:ss");
-            var endDateTime = endDate.ToString("yyyy-MM-dd HH:mm:ss");
-            using (var conn = new SqlConnection(_connectString))
-            {
-                string sqlQuery = queryString+$@"
+                tradeQueryServiceModel.sortColumn = $"TradeTable.{tradeQueryServiceModel.sortColumn}";
+            var startDateTime= tradeQueryServiceModel.startDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var endDateTime = tradeQueryServiceModel.endDate.ToString("yyyy-MM-dd HH:mm:ss");
+            string sqlQuery = queryString + $@"
                 WHERE
                     TradeTable.Status <> 2
                     AND TradeTable.TradeDate >='{startDateTime}' AND  TradeTable.TradeDate <='{endDateTime}'";
 
-                if (tradeType != "")
-                {
-                    sqlQuery += $" AND TradeTable.Type = '{tradeType}'";
-                }
-                if (stockId != "")
-                {
-                    sqlQuery += $" AND TradeTable.StockId LIKE '%{stockId}%'";
-                }
-                sqlQuery += @$" ORDER BY {sortColumn} {sortDirection}
-                                OFFSET {startIndex}ROWS FETCH NEXT {pageSize}ROWS ONLY";
+            if (tradeQueryServiceModel.tradeType != "")
+            {
+                sqlQuery += $" AND TradeTable.Type = '{tradeQueryServiceModel.tradeType}'";
+            }
+            if (tradeQueryServiceModel.stockId != "")
+            {
+                sqlQuery += $" AND TradeTable.StockId LIKE '%{tradeQueryServiceModel.stockId}%'";
+            }
+            sqlQuery += @$" ORDER BY {tradeQueryServiceModel.sortColumn} {tradeQueryServiceModel.sortDirection}
+                                OFFSET {tradeQueryServiceModel.pageIndex}ROWS FETCH NEXT {tradeQueryServiceModel.pageSize}ROWS ONLY";
+            using (var conn = new SqlConnection(_connectString))
+            {
                 var result =await conn.QueryAsync<JoinTable>(sqlQuery);
                 return result;
             }
@@ -73,26 +73,26 @@ namespace dotNet.Repository
         }
 
         /// 取出JoinAllTable的data count 前端顯示頁數用
-        public async Task<int> GetJoinAndFilterAllTableCount(DateTime startDate, DateTime endDate, string tradeType, string stockId)
+        public async Task<int> GetJoinAndFilterAllTableCount(TradeQueryServiceModel tradeQueryServiceModel)
         {
-            var startDateTime = startDate.ToString("yyyy-MM-dd HH:mm:ss");
-            var endDateTime = endDate.ToString("yyyy-MM-dd HH:mm:ss");
-            using (var conn = new SqlConnection(_connectString))
-            {
-                string sqlQuery = queryString+$@"
+            var startDateTime = tradeQueryServiceModel.startDate.ToString("yyyy-MM-dd HH:mm:ss");
+            var endDateTime = tradeQueryServiceModel.endDate.ToString("yyyy-MM-dd HH:mm:ss"); 
+            string sqlQuery = queryString+$@"
                 WHERE
                     TradeTable.Status <> 2
                     AND TradeTable.TradeDate >='{startDateTime}' AND  TradeTable.TradeDate <='{endDateTime}'";
 
-                if (tradeType != "")
+                if (tradeQueryServiceModel.tradeType != "")
                 {
-                    sqlQuery += $" AND TradeTable.Type = '{tradeType}'";
+                    sqlQuery += $" AND TradeTable.Type = '{tradeQueryServiceModel.tradeType}'";
                 }
-                if (stockId != "")
+                if (tradeQueryServiceModel.stockId != "")
                 {
-                    sqlQuery += $" AND TradeTable.StockId = '{stockId}'";
+                    sqlQuery += $" AND TradeTable.StockId = '{tradeQueryServiceModel.stockId}'";
                 }
 
+            using (var conn = new SqlConnection(_connectString))
+            {
                 var result = await conn.QueryAsync<JoinTable>(sqlQuery);
                 return result.Count();
             }
@@ -100,15 +100,14 @@ namespace dotNet.Repository
         }
 
         ///join某id的資料
-        public async Task<JoinTable> GetTradeInfoById(int id)
+        public async Task<TradeRespServiceModel> GetTradeInfoById(int id)
         {
-            using (var conn = new SqlConnection(_connectString))
-            {
-                string sqlQuery = queryString+$@"
+            string sqlQuery = queryString + $@"
                 WHERE
                     TradeTable.Id = {id}";
-
-                var result = await conn.QueryAsync<JoinTable>(sqlQuery);
+            using (var conn = new SqlConnection(_connectString))
+            {
+                var result = await conn.QueryAsync<TradeRespServiceModel>(sqlQuery);
                 return result.First();
             }
         }

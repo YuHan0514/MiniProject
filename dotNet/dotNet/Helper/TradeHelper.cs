@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using dotNet.Interface;
 using dotNet.DBModels;
+using dotNet.Interface;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

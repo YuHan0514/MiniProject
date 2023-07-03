@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using dotNet.Interface;
+using dotNet.ServiceModels;
 using dotNet.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,8 @@ namespace dotNet.Controllers
         [HttpPost]
         public async Task<string> GetStockInfo([FromBody] StockViewModel searchStockInfo)
         {
-            var stockRespServiceModel= await _service.GetStockInfo(searchStockInfo.stockId, searchStockInfo.searchDate);
+            var stock = _mapper.Map<StockServiceModel>(searchStockInfo);
+            var stockRespServiceModel= await _service.GetStockInfo(stock);
             var stockRespViewModel= _mapper.Map<StockRespViewModel>(stockRespServiceModel);
             return stockRespViewModel.Price.ToString();
         }
