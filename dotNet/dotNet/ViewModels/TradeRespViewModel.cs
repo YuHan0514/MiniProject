@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace dotNet.ViewModels
+﻿namespace dotNet.ViewModels
 {
     public class TradeRespViewModel
     {

@@ -35,6 +35,7 @@ export class StockComponent implements OnInit{
   feeDirection: string = "－";
   lendingPerioDirection: string = "－";
   returnDateDirection: string = "－";
+  isButtonDisabled = false;
 
   getHeaders() {
     let headers = new HttpHeaders();
@@ -106,6 +107,27 @@ export class StockComponent implements OnInit{
     this.returnDateDirection = "－";
   }
 
+  insertTwseDataToDB() {
+    this.isButtonDisabled = true;
+    this.dataSvc.setPageMessage("isUpdateDB");
+    const modal = this.ngbModal.open(Modal02Component);
+    let url = "https://localhost:44320/Trade/InsertTwseDataToDB";
+    modal.result.then(
+      (result) => {
+        if (result == true) {
+          let endDate = this.dataSvc.getDateMessage();
+          let data = JSON.stringify(endDate);
+          this.http.post(url,  data, { headers: this.getHeaders() }).subscribe((res: any) => {
+            this.dataSvc.setPageMessage("isMessage");
+            this.dataSvc.setUrlResultMessage(res.message);
+            this.ngbModal.open(Modal01Component);
+            this.isButtonDisabled = false;
+          })
+        }
+      }
+    )
+  }
+
   getStockInfo(stockId: string, searchDate: string, stockName: string) {
     let url = "https://localhost:44320/Stock/GetStockInfo";
     let sendData = {
@@ -121,6 +143,7 @@ export class StockComponent implements OnInit{
         stockPrice: this.message,
         stockDate: searchDate
       }
+      this.dataSvc.setPageMessage("isStockInfo");
       this.dataSvc.setMessage(stockInfo);
       this.ngbModal.open(Modal01Component);
     })
@@ -146,29 +169,27 @@ export class StockComponent implements OnInit{
       sortDirection: this.sortDirection
     };
     this.http.post(url, requestBody, { headers: this.getHeaders() }).subscribe((res: any) => {
-      this.stockArray = res.item1
-      this.pageCount = res.item2
+      this.stockArray = res.items
+      this.pageCount = res.totalCount
       this.isFilter = true;
       this.addPageOption();
       this.isPages = true;
     })
   }
   deleteStock(id: number) {
+    this.dataSvc.setPageMessage("isDelete");
     const modal = this.ngbModal.open(Modal02Component);
     let url = "https://localhost:44320/Trade/DeleteStockByStatus";
     modal.result.then(
       (result) => {
         if (result == true) {
           this.http.post(url, id, { headers: this.getHeaders() }).subscribe((res: any) => {
-            this.deleteReturnMsg = res;
             this.getDataFromBackEndByPage();
           })
         }
       }
     )
-    
   }
   ngOnInit(): void {
-    /*this.getDataFromBackEnd();*/
   }
 }

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using dotNet.Interface;
 using dotNet.DBModels;
+using dotNet.Interface;
 using dotNet.ServiceModels;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -28,10 +26,10 @@ namespace dotNet.Service
             _stockRepository = stockRepository;
             _tradeHelper = tradeHelper;
         }
-        public async Task<StockRespServiceModel> GetStockInfo(string id, string tradeDate)
+        public async Task<StockRespServiceModel> GetStockInfo(StockServiceModel stock)
         {
-            DateTime time = DateTime.Parse(tradeDate);
-            var closingPriceTables = await _context.ClosingPriceTables.FirstOrDefaultAsync(x => x.TradeDate == time && x.StockId == id);
+            DateTime time = DateTime.Parse(stock.searchDate);
+            var closingPriceTables = await _context.ClosingPriceTables.FirstOrDefaultAsync(x => x.TradeDate == time && x.StockId == stock.stockId);
             return _mapper.Map<StockRespServiceModel>(closingPriceTables);
         }
     }

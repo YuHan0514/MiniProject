@@ -10,9 +10,23 @@ export class Modal01Component implements OnInit {
   constructor(private activeModal: NgbActiveModal, private dataSvc: StockInfoService) {
   }
   message!: { stockId: string, stockName: string, stockPrice: string, stockDate: string };
-
+  pageInfo!: string;
+  isStockInfo: boolean = false;
+  isMessage: boolean = false;
+  urlResult!: string;
   ngOnInit() {
-    this.message = this.dataSvc.getMessage();
+    this.pageInfo = this.dataSvc.getPageMessage();
+    if (this.pageInfo == "isStockInfo") {
+      this.isStockInfo = true;
+      this.isMessage = false;
+      this.message = this.dataSvc.getMessage();
+    }
+    else if (this.pageInfo == "isMessage") {
+      this.isStockInfo = false;
+      this.isMessage = true;
+      this.urlResult = this.dataSvc.getUrlResultMessage();
+    }
+    
   }
 
   confirm() {

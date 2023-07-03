@@ -1,6 +1,6 @@
-﻿namespace dotNet.ViewModels
+﻿namespace dotNet.ServiceModels
 {
-    public class StockViewModel
+    public class StockServiceModel
     {
         public string stockId { get; set; }
         public string searchDate { get; set; }

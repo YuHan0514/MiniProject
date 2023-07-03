@@ -8,13 +8,15 @@ import { FormsModule } from '@angular/forms';
 import { Modal01Component } from './modal01/modal01.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Modal02Component } from './modal02/modal02.component';
+import { EditStockComponent } from './edit-stock/edit-stock.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StockComponent,
     Modal01Component,
-    Modal02Component
+    Modal02Component,
+    EditStockComponent
   ],
   imports: [
     BrowserModule,
