@@ -1,32 +1,38 @@
-<br>
-資料時間
-<input type="date" [(ngModel)]="startDate" />至
-<input type="date" [(ngModel)]="endDate" />
-<br>
-交易方式
-<select id="typeSelect" [(ngModel)]="selectedType">
-  <option value=""></option>
-  <option value="F">定價</option>
-  <option value="C">競價</option>
-  <option value="N">議借</option>
-</select>
-<br>
-股票代碼
-<input [(ngModel)]="stockCode" type="text" name="stockCode" />
-<button (click)="getDataFromBackEnd(1,'Id','↑')">確認</button>
-<br>
-<select *ngIf="isPages" id="pageSelect" [(ngModel)]="selectedPage" (click)="getDataFromBackEndByPage()">
-  <option value="1">頁數</option>
-  <option *ngFor="let opt of ngOptions"
-          [selected]="opt === selectedPage"
-          [value]="opt">
-    {{ opt }}
-  </option>
-</select>
-<div style="text-align:right">
+<div style="margin-top: 10px; display: flex; justify-content: center; ">
+  資料時間：
+  <input type="date" [(ngModel)]="startDate" />至
+  <input type="date" [(ngModel)]="endDate" />
+</div>
+<div style="margin-top: 10px; display: flex; justify-content: center;">
+  交易方式：
+  <select id="typeSelect" [(ngModel)]="selectedType">
+    <option value=""></option>
+    <option value="F">定價</option>
+    <option value="C">競價</option>
+    <option value="N">議借</option>
+  </select>
+</div>
+<div style="margin-top: 10px; display: flex; justify-content: center;">
+  股票代碼：
+  <input style="width: 5em" [(ngModel)]="stockCode" type="text" name="stockCode" />
+</div>
+<div style="margin-top: 10px; display: flex; justify-content: center;">
+  <button (click)="getDataFromBackEnd(1,'Id','↑')">確認</button>
+</div>
+<div style="margin-top: 10px; display: flex; justify-content: center;">
+  <select *ngIf="isPages" id="pageSelect" [(ngModel)]="selectedPage" (click)="getDataFromBackEndByPage()">
+    <option value="1">頁數</option>
+    <option *ngFor="let opt of ngOptions"
+            [selected]="opt === selectedPage"
+            [value]="opt">
+      {{ opt }}
+    </option>
+  </select>
+</div>
+<div style="text-align: right; margin: 0 20px 0 0; ">
   <button [disabled]="isButtonDisabled" (click)="insertTwseDataToDB()">更新資料庫</button>
 </div>
-<div  style="margin-top: 10px;">
+<div style="margin-top: 10px;">
   <table style="border: 1px solid black; margin: 0 20px 0 20px; ">
     <thead>
       <tr>

@@ -1,0 +1,11 @@
+/*input[type="date"] {
+  width: 7.5em;
+}
+input[type="date"]:before {
+  content: "yyyy/mm/dd  ";
+}
+
+  input[type="date"].selected:before {
+    content: "" !important;
+  }
+*/

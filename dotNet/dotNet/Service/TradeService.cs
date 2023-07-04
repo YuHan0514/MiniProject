@@ -106,6 +106,7 @@ namespace dotNet.Service
             //if pageIndex<1, pageIndex=1
             tradeQueryServiceModel.pageIndex = tradeQueryServiceModel.pageIndex < 1 ? 1 : tradeQueryServiceModel.pageIndex;
             var startIndex = (tradeQueryServiceModel.pageIndex - 1) * tradeQueryServiceModel.pageSize;
+            tradeQueryServiceModel.pageIndex = startIndex;
             switch (tradeQueryServiceModel.sortDirection)
             {
                 default:

@@ -17,8 +17,8 @@ export class StockComponent implements OnInit{
   pageCount: number = 0;
   isFilter: boolean = false;
   isPages: boolean = false;
-  startDate!: Date | null;
-  endDate!: Date | null;
+  startDate: string="2023-01-01";
+  endDate!: string;
   selectedType: string = "";
   stockCode: string = "";
   ngOptions: number[] = [];
@@ -36,6 +36,14 @@ export class StockComponent implements OnInit{
   lendingPerioDirection: string = "－";
   returnDateDirection: string = "－";
   isButtonDisabled = false;
+
+  ngOnInit(): void {
+    let currentDate = new Date();
+    let year = currentDate.getFullYear();
+    let month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+    let day = ('0' + currentDate.getDate()).slice(-2);
+    this.endDate = `${year}-${month}-${day}`;
+  }
 
   getHeaders() {
     let headers = new HttpHeaders();
@@ -190,6 +198,5 @@ export class StockComponent implements OnInit{
       }
     )
   }
-  ngOnInit(): void {
-  }
+
 }
