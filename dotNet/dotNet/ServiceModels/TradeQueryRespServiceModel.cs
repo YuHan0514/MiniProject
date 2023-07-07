@@ -6,5 +6,6 @@ namespace dotNet.ServiceModels
     {
         public List<TradeRespServiceModel> Items { get; set; }
         public int TotalCount { get; set; }
+        public int TotalPage { get; set; }
     }
 }

@@ -12,7 +12,7 @@ import { Modal01Component } from '../modal01/modal01.component';
 })
 export class EditStockComponent implements OnInit{
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private ngbModal: NgbModal, private dataSvc: StockInfoService) { }
-  stock!: { id: number; tradeDate: string; stockId: string; name: string; type: string; volume: number; fee: Float32Array; price: Float32Array; lendingPeriod: number; returnDate: string; };
+  stock!: { id: number; tradeDate: string; stockId: string; name: string; type: string; volume: number; fee: number; price: number; lendingPeriod: number; returnDate: string; };
 
   isEdit: boolean = false
 

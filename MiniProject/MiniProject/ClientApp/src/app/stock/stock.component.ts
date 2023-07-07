@@ -12,9 +12,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class StockComponent implements OnInit{
   constructor(private http: HttpClient, private dataSvc: StockInfoService, private ngbModal: NgbModal) { }
-  stockArray: {id:number, tradeDate: string, stockId: string, name: string, type: string, volume: number, fee: Float32Array, price: Float32Array, lendingPeriod: number, returnDate: string }[] = [];
+  stockArray: { id: number, tradeDate: string, stockId: string, name: string, type: string, volume: number, fee: number, price: number, lendingPeriod: number, returnDate: string }[] = [];
   message!:string;
   pageCount: number = 0;
+  totalCount: number = 0;
   isFilter: boolean = false;
   isPages: boolean = false;
   startDate: string="2023-01-01";
@@ -53,7 +54,7 @@ export class StockComponent implements OnInit{
 
   addPageOption() {
     this.ngOptions = []
-    for (let i = 1; i <= this.pageCount; i++) {
+    for (let i = 2; i <= this.pageCount; i++) {
       this.ngOptions.push(i);
     }
   }
@@ -148,8 +149,8 @@ export class StockComponent implements OnInit{
       let stockInfo = {
         stockId: stockId,
         stockName: stockName,
-        stockPrice: this.message,
-        stockDate: searchDate
+        stockPrice: res.price,
+        stockDate: res.tradeDate
       }
       this.dataSvc.setPageMessage("isStockInfo");
       this.dataSvc.setMessage(stockInfo);
@@ -178,7 +179,8 @@ export class StockComponent implements OnInit{
     };
     this.http.post(url, requestBody, { headers: this.getHeaders() }).subscribe((res: any) => {
       this.stockArray = res.items
-      this.pageCount = res.totalCount
+      this.pageCount = res.totalPage
+      this.totalCount = res.totalCount
       this.isFilter = true;
       this.addPageOption();
       this.isPages = true;

@@ -88,7 +88,7 @@ namespace dotNet.Repository
                 }
                 if (tradeQueryServiceModel.stockId != "")
                 {
-                    sqlQuery += $" AND TradeTable.StockId = '{tradeQueryServiceModel.stockId}'";
+                    sqlQuery += $" AND TradeTable.StockId LIKE '%{tradeQueryServiceModel.stockId}%'";
                 }
 
             using (var conn = new SqlConnection(_connectString))

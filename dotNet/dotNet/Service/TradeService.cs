@@ -121,12 +121,13 @@ namespace dotNet.Service
             }
             var joinTables = (await _stockRepository.JoinAndFilterAllTable(tradeQueryServiceModel)).ToList();
             var tradeRespServiceModels = _mapper.Map<List<TradeRespServiceModel>>(joinTables);
-            var count = await _stockRepository.GetJoinAndFilterAllTableCount(tradeQueryServiceModel);
-            var totalCount = (int)Math.Ceiling(count / (double)tradeQueryServiceModel.pageSize);
+            var totalCount = await _stockRepository.GetJoinAndFilterAllTableCount(tradeQueryServiceModel);
+            var totalPage = (int)Math.Ceiling(totalCount / (double)tradeQueryServiceModel.pageSize);
             var tradeQueryRespServiceModel = new TradeQueryRespServiceModel()
             {
                 Items = tradeRespServiceModels,
-                TotalCount = totalCount
+                TotalCount = totalCount,
+                TotalPage = totalPage
             };
             return tradeQueryRespServiceModel;
         }
@@ -145,8 +146,8 @@ namespace dotNet.Service
         ///利用ID從DB抓取一筆資料
         public async Task<TradeRespServiceModel> GetStockById(int id)
         {
-            var tradeRespServiceModel = await _stockRepository.GetTradeInfoById(id);
-            return tradeRespServiceModel;
+            var tradeRespServiceModels = await _stockRepository.GetTradeInfoById(id);
+            return tradeRespServiceModels;
         }
 
         ///修改DB中一筆資料，只修改TradeTables
