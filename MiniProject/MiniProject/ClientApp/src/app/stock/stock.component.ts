@@ -117,13 +117,13 @@ export class StockComponent implements OnInit{
   }
 
   insertTwseDataToDB() {
-    this.isButtonDisabled = true;
     this.dataSvc.setPageMessage("isUpdateDB");
     const modal = this.ngbModal.open(Modal02Component);
     let url = "https://localhost:44320/Trade/InsertTwseDataToDB";
     modal.result.then(
       (result) => {
         if (result == true) {
+          this.isButtonDisabled = true;
           let endDate = this.dataSvc.getDateMessage();
           let data = JSON.stringify(endDate);
           this.http.post(url,  data, { headers: this.getHeaders() }).subscribe((res: any) => {
