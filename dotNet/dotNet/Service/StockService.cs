@@ -2,10 +2,11 @@
 using dotNet.DBModels;
 using dotNet.Interface;
 using dotNet.ServiceModels;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotNet.Service
 {
@@ -28,9 +29,9 @@ namespace dotNet.Service
         }
         public async Task<StockRespServiceModel> GetStockInfo(StockServiceModel stock)
         {
-            DateTime time = DateTime.Parse(stock.searchDate);
-            var closingPriceTables = await _context.ClosingPriceTables.FirstOrDefaultAsync(x => x.TradeDate == time && x.StockId == stock.stockId);
-            return _mapper.Map<StockRespServiceModel>(closingPriceTables);
+            var closingPriceTable = await _context.ClosingPriceTables.OrderByDescending(x => x.TradeDate).FirstAsync(x => x.StockId == stock.stockId);
+            var stockResp = _mapper.Map<StockRespServiceModel>(closingPriceTable);
+            return stockResp;
         }
     }
 }

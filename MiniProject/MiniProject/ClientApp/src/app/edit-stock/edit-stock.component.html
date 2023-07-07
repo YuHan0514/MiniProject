@@ -27,10 +27,10 @@
             <option value="N">議借</option>
           </select>
         </td>
-        <td><input style="width: 5em" [(ngModel)]="stock.volume" type="number" name="editVolume" value={{stock.volume}} /></td>
-        <td><input style="width: 5em" [(ngModel)]="stock.fee" type="number" step="0.01" name="editFee" value={{stock.fee}} /></td>
-        <td>{{stock.price}}</td>
-        <td><input style="width: 5em" [(ngModel)]="stock.lendingPeriod" type="number" name="editLendingPeriod" value={{stock.lendingPeriod}} /></td>
+        <td><input style="width: 5em" [(ngModel)]="stock.volume" type="number" value={{stock.volume}} /></td>
+        <td><input style="width: 5em" [(ngModel)]="stock.fee"  type="number" step="0.01"  value={{stock.fee}} /></td>
+        <td>{{stock.price  | number:'1.2-2'}}</td>
+        <td><input style="width: 5em" [(ngModel)]="stock.lendingPeriod" type="number" value={{stock.lendingPeriod}} /></td>
         <td><input  type="date" [(ngModel)]="stock.returnDate" /></td>
         <td><button (click)="editStockData()">確認</button></td>
       </tr>

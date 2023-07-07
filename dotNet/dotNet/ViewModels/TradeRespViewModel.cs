@@ -8,7 +8,7 @@
         public string Name { get; set; }
         public string Type { get; set; }
         public int Volume { get; set; }
-        public float Fee { get; set; }
+        public string Fee { get; set; }
         public float? Price { get; set; }
         public int LendingPeriod { get; set; }
         public string ReturnDate { get; set; }

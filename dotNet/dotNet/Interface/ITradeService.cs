@@ -1,4 +1,5 @@
-﻿using dotNet.ServiceModels;
+﻿using dotNet.DBModels;
+using dotNet.ServiceModels;
 using System;
 using System.Threading.Tasks;
 

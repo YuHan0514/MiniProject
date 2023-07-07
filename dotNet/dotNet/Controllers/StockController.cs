@@ -24,12 +24,12 @@ namespace dotNet.Controllers
         }
         // 取得某筆資料的昨收價
         [HttpPost]
-        public async Task<string> GetStockInfo([FromBody] StockViewModel searchStockInfo)
+        public async Task<StockRespViewModel> GetStockInfo([FromBody] StockViewModel searchStockInfo)
         {
             var stock = _mapper.Map<StockServiceModel>(searchStockInfo);
             var stockRespServiceModel= await _service.GetStockInfo(stock);
             var stockRespViewModel= _mapper.Map<StockRespViewModel>(stockRespServiceModel);
-            return stockRespViewModel.Price.ToString();
+            return stockRespViewModel;
         }
 
         

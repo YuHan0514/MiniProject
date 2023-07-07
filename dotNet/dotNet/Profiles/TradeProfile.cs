@@ -16,10 +16,12 @@ namespace dotNet.Profiles
             CreateMap<TradeRespServiceModel, TradeRespViewModel>()
                      .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate.ToString("yyyy-MM-dd")))
                      .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src => src.ReturnDate.ToString("yyyy-MM-dd")));
-            CreateMap<ClosingPriceTable, StockRespServiceModel>();
+            CreateMap<ClosingPriceTable, StockRespServiceModel>()
+                .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate.ToString("yyyy-MM-dd")));
             CreateMap<JoinTable, TradeRespViewModel>();
             CreateMap<JoinTable, TradeRespServiceModel>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => RestoredType(src.Type)));
+                //.ForMember(dest => dest.Fee, opt => opt.MapFrom(src => src.Fee.ToString("0.00")));
             CreateMap<TradeViewModel, TradeServiceModel>();
             CreateMap<TradeQueryViewModel, TradeQueryServiceModel>();
             CreateMap<TradeQueryRespServiceModel, TradeQueryRespViewModel>();
