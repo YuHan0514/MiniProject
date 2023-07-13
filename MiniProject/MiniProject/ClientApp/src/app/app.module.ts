@@ -9,6 +9,7 @@ import { Modal01Component } from './modal01/modal01.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Modal02Component } from './modal02/modal02.component';
 import { EditStockComponent } from './edit-stock/edit-stock.component';
+import { StockService } from './service/stock.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { EditStockComponent } from './edit-stock/edit-stock.component';
     FormsModule,
     NgbModule
   ],
-  providers: [],
+  providers: [StockService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
