@@ -6,7 +6,7 @@
     <div class="mb-5">
       <p>Stock: {{message.stockId}} {{message.stockName}}</p>
       <p>Date:  {{message.stockDate}}</p>
-      <p>Price: {{message.stockPrice}}</p>
+      <p>Price: {{message.stockPrice | number:'1.2-2'}}</p>
     </div>
     <div class="d-flex flex-wrap justify-content-center">
       <div class="w-50 btn bg-info" (click)="confirm()">是</div>
