@@ -3,6 +3,7 @@ import { Modal02Component } from '../modal02/modal02.component';
 import { StockInfoService } from '../stock-info.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StockService } from '../service/stock.service';
+import { DataModel } from '../data-model';
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
@@ -10,113 +11,81 @@ import { StockService } from '../service/stock.service';
 })
 
 export class StockComponent implements OnInit {
-  constructor( private dataSvc: StockInfoService, private ngbModal: NgbModal, private stockService: StockService) { }
-  stockArray: { id: number, tradeDate: string, stockId: string, name: string, type: string, volume: number, fee: number, price: number, lendingPeriod: number, returnDate: string }[] = [];
-  message!: string;
-  pageCount: number = 0;
-  totalCount: number = 0;
-  isFilter: boolean = false;
-  isPages: boolean = false;
-  startDate: string = "2023-01-01";
-  endDate!: string;
-  selectedType: string = "";
-  stockCode: string = "";
-  ngOptions: number[] = [];
-  selectedPage: number = 1;
-  sortColumn: string = "Id";
-  sortDirection: string = "↑";
-
-  tradeDateDirection: string = "↑";
-  stockCodeDirection: string = "－";
-  typeDirection: string = "－";
-  priceDirection: string = "－";
-  volumeDirection: string = "－";
-  feeDirection: string = "－";
-  lendingPerioDirection: string = "－";
-  returnDateDirection: string = "－";
-  isButtonDisabled = false;
-
-  ngOnInit(): void {
-    let currentDate = new Date();
-    let year = currentDate.getFullYear();
-    let month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-    let day = ('0' + currentDate.getDate()).slice(-2);
-    this.endDate = `${year}-${month}-${day}`;
+  dataModel: DataModel;
+  constructor(private dataSvc: StockInfoService, private ngbModal: NgbModal, private stockService: StockService) {
+    this.dataModel = new DataModel();
   }
 
+  ngOnInit(): void {
+  }
 
   getDataFromBackEndByPage() {
-    this.getDataFromBackEnd(this.selectedPage, this.sortColumn, this.sortDirection);
+    this.getDataFromBackEnd(this.dataModel.selectedPage, this.dataModel.sortColumn, this.dataModel.sortDirection);
   }
 
   async sortData(tittle: string, direction: string) {
-    let data = await this.stockService.sortData(tittle, direction)
-    this.sortColumn = tittle
-    this.stockArray = data.stockArray
-    this.pageCount = data.pageCount
-    this.totalCount = data.totalCount
-    this.isFilter = true;
+    let init = await this.stockService.sortData(tittle, direction)
+    await this.getDataFromBackEnd(1, tittle, init.sortDirection);
     this.addPageOption();
-    this.isPages = true;
-    this.getDirectionStatus()
-    this.selectedPage = 1;
-    this.sortDirection = this.stockService.sortDirection
-
+    this.dataModel.isPages = true;
+    this.getDirectionStatus(init)
+    this.dataModel.selectedPage = 1;
   }
 
-  getDirectionStatus() {
-    this.tradeDateDirection = this.stockService.tradeDateDirection
-    this.stockCodeDirection = this.stockService.stockCodeDirection
-    this.typeDirection = this.stockService.typeDirection
-    this.priceDirection = this.stockService.priceDirection
-    this.volumeDirection = this.stockService.volumeDirection
-    this.feeDirection = this.stockService.feeDirection
-    this.lendingPerioDirection = this.stockService.lendingPerioDirection
-    this.returnDateDirection = this.stockService.returnDateDirection
+  getDirectionStatus(init: any) {
+    this.dataModel.sortDirection = init.sortDirection
+    this.dataModel.sortColumn = init.sortColumn
+    this.dataModel.tradeDateDirection = init.tradeDateDirection
+    this.dataModel.stockCodeDirection = init.stockCodeDirection
+    this.dataModel.typeDirection = init.typeDirection
+    this.dataModel.priceDirection = init.priceDirection
+    this.dataModel.volumeDirection = init.volumeDirection
+    this.dataModel.feeDirection = init.feeDirection
+    this.dataModel.lendingPerioDirection = init.lendingPerioDirection
+    this.dataModel.returnDateDirection = init.returnDateDirection
   }
 
   async insertTwseDataToDB() {
-    this.isButtonDisabled = true;
+    this.dataModel.isButtonDisabled = true;
     this.dataSvc.setPageMessage("isUpdateDB");
     const modal = this.ngbModal.open(Modal02Component);
      modal.result.then(
       async (result) => {
          if (result == true) {
-           let status = await this.stockService.insertTwseDataToDB();
-           this.isButtonDisabled = status;
+           await this.stockService.insertTwseDataToDB();
+           this.dataModel.isButtonDisabled = false;
          }
          else {
-           this.isButtonDisabled = false;
+           this.dataModel.isButtonDisabled = false;
          }
       })
   }
 
   getStockInfo(stockId: string, searchDate: string, stockName: string) {
     this.stockService.getStockInfo(stockId, searchDate, stockName);
-
   }
 
   async getDataFromBackEnd(pageIndex: number, tittle: string, direction: string) {
-    this.sortColumn = tittle
-    let data = await this.stockService.getDataFromBackEnd(pageIndex, tittle, direction, this.endDate, this.startDate, this.selectedType, this.stockCode)
-    this.stockArray = data.stockArray
-    this.pageCount = data.pageCount
-    this.totalCount = data.totalCount
-    this.selectedPage = pageIndex;
-    this.isFilter = true;
+    if (tittle == "Id") {
+      let init = await this.stockService.sortData("TradeDate", "↓")
+      this.getDirectionStatus(init)
+    }
+    this.dataModel.sortColumn = tittle
+    let data = await this.stockService.getDataFromBackEnd(pageIndex, tittle, direction, this.dataModel.endDate, this.dataModel.startDate, this.dataModel.selectedType, this.dataModel.stockCode)
+    this.dataModel.stockArray = data.stockArray
+    this.dataModel.pageCount = data.pageCount
+    this.dataModel.totalCount = data.totalCount
+    this.dataModel.selectedPage = data.selectedPage
     this.addPageOption();
-    this.isPages = true;
-    this.getDirectionStatus()
-
+    this.dataModel.isPages = true;
   }
   addPageOption() {
-    this.ngOptions = []
-    for (let i = 2; i <= this.pageCount; i++) {
-      this.ngOptions.push(i);
+    this.dataModel.ngOptions = []
+    for (let i = 2; i <= this.dataModel.pageCount; i++) {
+      this.dataModel.ngOptions.push(i);
     }
   }
   deleteStock(id: number) {
     this.stockService.deleteStock(id);
-
   }
 }

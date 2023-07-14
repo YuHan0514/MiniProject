@@ -1,11 +1,11 @@
 <div style="margin-top: 10px; display: flex; justify-content: center; ">
   資料時間：
-  <input type="date" [(ngModel)]="startDate" />至
-  <input type="date" [(ngModel)]="endDate" />
+  <input type="date" [(ngModel)]="dataModel.startDate" />至
+  <input type="date" [(ngModel)]="dataModel.endDate" />
 </div>
 <div style="margin-top: 10px; display: flex; justify-content: center;">
   交易方式：
-  <select id="typeSelect" [(ngModel)]="selectedType">
+  <select id="typeSelect" [(ngModel)]="dataModel.selectedType">
     <option value="">全部</option>
     <option value="F">定價</option>
     <option value="C">競價</option>
@@ -14,16 +14,16 @@
 </div>
 <div style="margin-top: 10px; display: flex; justify-content: center;">
   股票代碼：
-  <input style="width: 5em" [(ngModel)]="stockCode" type="text" name="stockCode" />
+  <input style="width: 5em" [(ngModel)]="dataModel.stockCode" type="text" name="stockCode" />
 </div>
 <div style="margin-top: 10px; display: flex; justify-content: center;">
   <button (click)="getDataFromBackEnd(1,'Id','↑')">確認</button>
 </div>
-<div *ngIf="isPages" style="margin-top: 10px; display: flex; justify-content: center;">第
-  <select  id="pageSelect" [(ngModel)]="selectedPage" (click)="getDataFromBackEndByPage()">
+<div *ngIf="dataModel.isPages" style="margin-top: 10px; display: flex; justify-content: center;">第
+  <select  id="pageSelect" [(ngModel)]="dataModel.selectedPage" (click)="getDataFromBackEndByPage()">
     <option value="1">1</option>
-    <option *ngFor="let opt of ngOptions"
-            [selected]="opt === selectedPage"
+    <option *ngFor="let opt of dataModel.ngOptions"
+            [selected]="opt === dataModel.selectedPage"
             [value]="opt">
       {{ opt }}
     </option>
@@ -32,10 +32,10 @@
 </div>
 <div style="display: flex;">
   <div style=" text-align: left; margin: 0 0 0 20px; flex: 1;">
-    總筆數：{{totalCount}} 筆
+    總筆數：{{dataModel.totalCount}} 筆
   </div>
   <div style="text-align: right; margin: 0 20px 0 0; flex: 1;">
-    <button [disabled]="isButtonDisabled" (click)="insertTwseDataToDB()">更新資料庫</button>
+    <button [disabled]="dataModel.isButtonDisabled" (click)="insertTwseDataToDB()">更新資料庫</button>
   </div>
 </div>
 
@@ -43,19 +43,19 @@
   <table style="border: 1px solid black; margin: 0 20px 0 20px; ">
     <thead>
       <tr>
-        <td width="200px" (click)="sortData('TradeDate',tradeDateDirection)">TradeDate {{tradeDateDirection}}</td>
-        <td width="400px" (click)="sortData('StockId',stockCodeDirection)">StockCode {{stockCodeDirection}}</td>
-        <td width="200px" (click)="sortData('Type',typeDirection)">Type {{typeDirection}}</td>
-        <td width="200px" (click)="sortData('Volume',volumeDirection)">Volume {{volumeDirection}}</td>
-        <td width="200px" (click)="sortData('Fee',feeDirection)">Fee {{feeDirection}}</td>
-        <td width="200px" (click)="sortData('Price',priceDirection)">Price {{priceDirection}}</td>
-        <td width="200px" (click)="sortData('LendingPeriod',lendingPerioDirection)">LendingPeriod {{lendingPerioDirection}}</td>
-        <td width="200px" (click)="sortData('ReturnDate',returnDateDirection)">ReturnDate {{returnDateDirection}}</td>
+        <td width="200px" (click)="sortData('TradeDate',dataModel.tradeDateDirection)">TradeDate {{dataModel.tradeDateDirection}}</td>
+        <td width="400px" (click)="sortData('StockId',dataModel.stockCodeDirection)">StockCode {{dataModel.stockCodeDirection}}</td>
+        <td width="200px" (click)="sortData('Type',dataModel.typeDirection)">Type {{dataModel.typeDirection}}</td>
+        <td width="200px" (click)="sortData('Volume',dataModel.volumeDirection)">Volume {{dataModel.volumeDirection}}</td>
+        <td width="200px" (click)="sortData('Fee',dataModel.feeDirection)">Fee {{dataModel.feeDirection}}</td>
+        <td width="200px" (click)="sortData('Price',dataModel.priceDirection)">Price {{dataModel.priceDirection}}</td>
+        <td width="200px" (click)="sortData('LendingPeriod',dataModel.lendingPerioDirection)">LendingPeriod {{dataModel.lendingPerioDirection}}</td>
+        <td width="200px" (click)="sortData('ReturnDate',dataModel.returnDateDirection)">ReturnDate {{dataModel.returnDateDirection}}</td>
         <td width="200px">Action</td>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let stock of stockArray">
+      <tr *ngFor="let stock of dataModel.stockArray">
         <td>{{stock.tradeDate}}</td>
         <td (click)="getStockInfo(stock.stockId,stock.tradeDate,stock.name)">{{stock.stockId}} {{stock.name}}</td>
         <td>{{stock.type}}</td>
