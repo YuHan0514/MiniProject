@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Github\\MiniProject\\dotNet\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\repository\\stockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\repository\\stockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StockRepository.cs",
+              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Repository\\StockRepository.cs",
+              "RelativeDocumentMoniker": "dotNet\\Repository\\StockRepository.cs",
+              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Repository\\StockRepository.cs",
+              "RelativeToolTip": "dotNet\\Repository\\StockRepository.cs",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAUwAgAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-24T05:27:06.583Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "dotNet\\appsettings.Development.json",
+              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\appsettings.Development.json",
+              "RelativeToolTip": "dotNet\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-24T05:02:56.657Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
