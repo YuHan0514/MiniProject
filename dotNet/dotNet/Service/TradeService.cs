@@ -30,7 +30,7 @@ namespace dotNet.Service
             _tradeHelper = tradeHelper;
         }
 
-        ///取得TWSE資料並新增近DB，startDate固定為DB最後一筆+1天
+        ///取得TWSE資料並新增進DB，startDate固定為DB最後一筆+1天，目前外部API已掛掉
         public async Task<TradeTwseRespServiceModel> InsertTwseDataToDB(DateTime endDate)
         {
             var startDate = "20241212";
@@ -180,6 +180,8 @@ namespace dotNet.Service
             }
             
         }
+        
+        //自行新增一筆資料
         public async Task<TradeTwseRespServiceModel> InsertDataToDB(TradeServiceModel stock)
         {
             try

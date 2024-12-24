@@ -28,7 +28,7 @@ namespace dotNet
             {
                 options.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5000").AllowAnyHeader().AllowAnyMethod();
+                    policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
                 });
             });
             services.AddControllers();
