@@ -3,12 +3,26 @@
   "WorkspaceRootPath": "C:\\Github\\MiniProject\\dotNet\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\repository\\stockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\repository\\stockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\asus\\AppData\\Local\\Temp\\55xrjcgi..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\service\\tradeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\service\\tradeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\dbmodels\\closingpricetable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\dbmodels\\closingpricetable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\profiles\\tradeprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\profiles\\tradeprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|c:\\github\\miniproject\\dotnet\\dotnet\\controllers\\tradecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8954D97B-ABD9-4269-B164-5D3D3C1579DC}|dotNet\\dotNet.csproj|solutionrelative:dotnet\\controllers\\tradecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\asus\\AppData\\Local\\Temp\\55xrjcgi..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +37,64 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "StockRepository.cs",
-              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Repository\\StockRepository.cs",
-              "RelativeDocumentMoniker": "dotNet\\Repository\\StockRepository.cs",
-              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Repository\\StockRepository.cs",
-              "RelativeToolTip": "dotNet\\Repository\\StockRepository.cs",
-              "ViewState": "AgIAAFsAAAAAAAAAAAAUwAgAAAAdAAAAAAAAAA==",
+              "Title": "SQLQuery2.sql ",
+              "DocumentMoniker": "C:\\Users\\asus\\AppData\\Local\\Temp\\55xrjcgi..sql",
+              "RelativeDocumentMoniker": "..\\..\\..\\Users\\asus\\AppData\\Local\\Temp\\55xrjcgi..sql",
+              "ToolTip": "SQLQuery2.sql *",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2024-12-24T08:14:54.484Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ClosingPriceTable.cs",
+              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\DBModels\\ClosingPriceTable.cs",
+              "RelativeDocumentMoniker": "dotNet\\DBModels\\ClosingPriceTable.cs",
+              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\DBModels\\ClosingPriceTable.cs",
+              "RelativeToolTip": "dotNet\\DBModels\\ClosingPriceTable.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAADwvwgAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-24T05:27:06.583Z",
+              "WhenOpened": "2024-12-24T07:58:32.778Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TradeController.cs",
+              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Controllers\\TradeController.cs",
+              "RelativeDocumentMoniker": "dotNet\\Controllers\\TradeController.cs",
+              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Controllers\\TradeController.cs",
+              "RelativeToolTip": "dotNet\\Controllers\\TradeController.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAWwEsAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-24T07:17:34.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TradeProfile.cs",
+              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Profiles\\TradeProfile.cs",
+              "RelativeDocumentMoniker": "dotNet\\Profiles\\TradeProfile.cs",
+              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Profiles\\TradeProfile.cs",
+              "RelativeToolTip": "dotNet\\Profiles\\TradeProfile.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAWwEcAAAB5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-24T07:15:49.45Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "dotNet\\appsettings.Development.json",
-              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\appsettings.Development.json",
-              "RelativeToolTip": "dotNet\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-12-24T05:02:56.657Z",
+              "Title": "TradeService.cs",
+              "DocumentMoniker": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Service\\TradeService.cs",
+              "RelativeDocumentMoniker": "dotNet\\Service\\TradeService.cs",
+              "ToolTip": "C:\\Github\\MiniProject\\dotNet\\dotNet\\Service\\TradeService.cs",
+              "RelativeToolTip": "dotNet\\Service\\TradeService.cs",
+              "ViewState": "AgIAAMkAAAAAAAAAAAAAwNcAAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-24T06:40:53.129Z",
               "EditorCaption": ""
             }
           ]

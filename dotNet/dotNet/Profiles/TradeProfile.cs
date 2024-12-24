@@ -57,15 +57,23 @@ namespace dotNet.Profiles
                     .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
 
+            CreateMap<TradeServiceModel, ClosingPriceTable>()
+                    .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate))
+                    .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
+                    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
+
             CreateMap<TradeServiceModel, TradeTable>()
                     .ForMember(dest => dest.TradeDate, opt => opt.MapFrom(src => src.TradeDate))
                     .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
-                    .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+                    .ForMember(dest => dest.Type, opt => opt.MapFrom(src => TransType(src.Type)))
                     .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
                     .ForMember(dest => dest.Fee, opt => opt.MapFrom(src => src.Fee))
                     .ForMember(dest => dest.LendingPeriod, opt => opt.MapFrom(src => src.LendingPeriod))
-                    .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src => src.ReturnDate));
+                    .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src => TransDateTime(src.ReturnDate.ToString())));
 
+            CreateMap<TradeServiceModel, StockTable>()
+                    .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
         }
         private static string GetStockId(string stockString)
         {

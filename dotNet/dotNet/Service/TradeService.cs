@@ -33,7 +33,8 @@ namespace dotNet.Service
         ///取得TWSE資料並新增近DB，startDate固定為DB最後一筆+1天
         public async Task<TradeTwseRespServiceModel> InsertTwseDataToDB(DateTime endDate)
         {
-            var startDate = _context.ClosingPriceTables.OrderByDescending(a => a.TradeDate).FirstOrDefault().TradeDate.AddDays(1).ToString("yyyyMMdd");
+            var startDate = "20241212";
+            //var startDate = _context.ClosingPriceTables.OrderByDescending(a => a.TradeDate).FirstOrDefault().TradeDate.AddDays(1).ToString("yyyyMMdd");
             try
             {
                 var joinTables = await _tradeHelper.GetStockListFromTwse(startDate, endDate);
@@ -178,6 +179,57 @@ namespace dotNet.Service
                 throw;
             }
             
+        }
+        public async Task<TradeTwseRespServiceModel> InsertDataToDB(TradeServiceModel stock)
+        {
+            try
+            {
+                string createUser = "Admin";
+                var today = DateTime.Today;
+                var stockTable = _mapper.Map<StockTable>(stock);
+                stockTable.CreateDate = today;
+                stockTable.CreateUser = createUser;
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    await _context.StockTables.AddAsync(stockTable);
+                    scope.Complete();
+                }
+                _context.SaveChanges();
+                var closingPriceTable = _mapper.Map<ClosingPriceTable>(stock);
+                closingPriceTable.CreateDate = today;
+                closingPriceTable.CreateUser = createUser;
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    await _context.ClosingPriceTables.AddAsync(closingPriceTable);
+                    scope.Complete();
+                }
+                _context.SaveChanges();
+                var tradeTable = _mapper.Map<TradeTable>(stock);
+                tradeTable.CreateDate = today;
+                tradeTable.CreateUser = createUser;
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    await _context.TradeTables.AddAsync(tradeTable);
+                    scope.Complete();
+                }
+                _context.SaveChanges();
+                var tradeTwseRespServiceModel = new TradeTwseRespServiceModel()
+                {
+                    code = 200,
+                    message = "success"
+                };
+                return tradeTwseRespServiceModel;
+            }
+            catch (System.Exception ex)
+            {
+                var tradeTwseRespServiceModel = new TradeTwseRespServiceModel()
+                {
+                    code = 500,
+                    message = ex.Message
+                };
+                return tradeTwseRespServiceModel;
+            }
+
         }
     }
 }

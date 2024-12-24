@@ -69,5 +69,15 @@ namespace dotNet.Controllers
             else
                 return BadRequest(result);
         }
+        [HttpPost]
+        public async Task<IActionResult> InsertDataToDB([FromBody] TradeViewModel trade)
+        {
+            var tradeService = _mapper.Map<TradeServiceModel>(trade);
+            var result = await _service.InsertDataToDB(tradeService);
+            if (result.code == 200)
+                return Ok(result);
+            else
+                return BadRequest(result);
+        }
     }
 }

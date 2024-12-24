@@ -7,6 +7,7 @@ namespace dotNet.Interface
 {
     public interface ITradeService
     {
+        public Task<TradeTwseRespServiceModel> InsertDataToDB(TradeServiceModel stock);
         public Task<TradeTwseRespServiceModel> InsertTwseDataToDB(DateTime endDate);
 
         public Task<TradeQueryRespServiceModel> GetStockListFromDB(TradeQueryServiceModel tradeQueryServiceModel);
